@@ -15,10 +15,6 @@ import { jwtDecode } from 'jwt-decode'
 const TopNavbarLayout = () => {
     const { data: session, status } = useSession()
     const [active, setActive] = useState(false)
-
-    console.log(session);
-
-
     const showMenu = () => {
         setActive(!active)
     }
@@ -39,25 +35,20 @@ const TopNavbarLayout = () => {
                             onClick={showMenu}
                         />
                     </div>
+                    <Link href='/' className='w-fit hidden md:block'>
+                        <h1 className=' text-3xl text-white font-semibold hover:scale-[101%] transition-transform'>SportFields</h1>
+                    </Link>
+                    <Link href={{ pathname: "/lapangan" }} className='text-white font-semibold hover:scale-[101%] hover:font-bold'>Lapangan</Link>
                     {
                         status == "authenticated" ? (
-                            <>
-                                <Link href='/' className='w-fit hidden md:block'>
-                                    <h1 className=' text-3xl text-white font-semibold hover:scale-[101%] transition-transform'>SportFields</h1>
-                                </Link>
-                                <div className='hidden sm:block'>
-                                    <div className='flex w-fit gap-4'>
-                                        <ButtonActive className={pathname == "/" ? "text-success bg-white" : " text-white btn-outline"} to="/">Home</ButtonActive>
-                                        <ButtonActive className={pathname == "/pemesanan" ? "text-success bg-white" : " text-white btn-outline"} to="/pemesanan">Pemesanan</ButtonActive>
-                                        <ButtonActive className={pathname == "/riwayat" ? "text-success bg-white" : " text-white btn-outline"} to="/riwayat" >Riwayat</ButtonActive>
-                                    </div>
+                            <div className='hidden sm:block'>
+                                <div className='flex w-fit gap-4'>
+                                    <ButtonActive className={pathname == "/" ? "text-success bg-white" : " text-white btn-outline"} to="/">Home</ButtonActive>
+                                    <ButtonActive className={pathname == "/pemesanan" ? "text-success bg-white" : " text-white btn-outline"} to="/pemesanan">Pemesanan</ButtonActive>
+                                    <ButtonActive className={pathname == "/riwayat" ? "text-success bg-white" : " text-white btn-outline"} to="/riwayat" >Riwayat</ButtonActive>
                                 </div>
-                            </>
-                        ) : (
-                            <Link href='/' className='w-fit hidden md:block'>
-                                <h1 className=' text-3xl text-white font-semibold hover:scale-[101%] transition-transform'>SportFields</h1>
-                            </Link>
-                        )
+                            </div>
+                        ) : <></>
                     }
                     {
                         status == "authenticated" ? (

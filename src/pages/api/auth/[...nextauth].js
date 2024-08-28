@@ -10,11 +10,11 @@ export default NextAuth({
             credentials: {},
             async authorize(credentials, req) {
                 const body = {
-                    email: credentials?.email,
+                    user: credentials?.user,
                     password: credentials?.password
                 }
 
-                return axios.post("/api/v1/auth/login", body).then((res) => {
+                return axios.post("/api/v1/auth/login", body).then((res) => {                    
                     return res.data.data
                 }).catch((error) => {
                     throw new Error(error.response.data.message)

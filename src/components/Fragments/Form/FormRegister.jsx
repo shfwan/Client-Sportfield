@@ -26,7 +26,7 @@ const FormRegister = () => {
             try {
                 event.preventDefault()
                 await usePostRegister(formik.values).then(() => {
-                    router.push("/login")
+                    router.push("/auth/login")
 
                 }).catch(err => {
                     Swal.fire({
@@ -43,7 +43,7 @@ const FormRegister = () => {
             firstname: yup.string().min(3, "Firstname must be at least 3 characters"),
             lastname: yup.string().min(3, "Lastname must be at least 3 characters"),
             email: yup.string().email("Email is not valid"),
-            phone: yup.string(),
+            phone: yup.number(),
             password: yup.string().min(8, "Password must be at least 8 characters"),
             confirmPassword: yup.string().oneOf([yup.ref("password"), null], "Passwords must match")
         })
@@ -91,7 +91,7 @@ const FormRegister = () => {
                         isInvalid={formik.errors.email}
                     />
                     <InputForm
-                        name=""
+                        name="phone"
                         title="Phone Number"
                         className="w-full"
                         type="number"

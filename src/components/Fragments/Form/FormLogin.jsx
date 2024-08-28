@@ -18,7 +18,7 @@ const FormLogin = () => {
     
     const formik = useFormik({
         initialValues: {
-            email: "",
+            user: "",
             password: ""
         },
         onSubmit: async () => {
@@ -27,13 +27,13 @@ const FormLogin = () => {
                 setIsLoading(true)
                 const res = await signIn('credentials', {
                     redirect: false,
-                    email: formik.values.email,
+                    user: formik.values.user,
                     password: formik.values.password,
-                    callbackUrl: callbackParams.get("callbackUrl") || "/",
+                    callbackUrl: callbackParams.get("callbackUrl") || "/lapangan",
                 })   
                 
                 if (res.ok) {
-                    router.push(callbackParams.get("callbackUrl") || "/")
+                    router.push(callbackParams.get("callbackUrl") || "/lapangan")
                 } else {
                     throw new Error(res.error)
                 }
@@ -52,11 +52,11 @@ const FormLogin = () => {
             }
         },
         validationSchema: yup.object().shape({
-            email: yup.string().email("Email tidak valid"),
+            user: yup.string(),
             password: yup.string().min(8, "Password minimal 8 karakter")
         }),
         onReset: () => {
-            formik.setFieldValue("email", "")
+            formik.setFieldValue("user", "")
             formik.setFieldValue("password", "")
         }
     })
@@ -70,11 +70,11 @@ const FormLogin = () => {
         <div className='flex flex-col h-fit items-center p-4 gap-4'>
             <form className="flex flex-col gap-4" onSubmit={formik.handleSubmit}>
                 <InputForm
-                    name="email"
-                    title="Email"
+                    name="user"
+                    title="User"
                     className="w-full"
                     type="text"
-                    placeholder="Email"
+                    placeholder="Email atau Nomor HP"
                     required={true}
                     onChange={handleFormInput}
                     value={formik.values.email}

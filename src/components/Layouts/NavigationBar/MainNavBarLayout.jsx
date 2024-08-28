@@ -18,8 +18,6 @@ const NavBar = () => {
         }
         
     },[session])
-
-    console.log(role);
     
     return (
         <div className='bg-[#f8fafc] text-black sticky top-0 z-50'>

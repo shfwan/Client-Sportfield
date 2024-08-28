@@ -11,28 +11,20 @@ import { Router } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 const LapanganLayout = () => {
-
-
-    const { data: lapangan, isLoading } = useFetchLapangan(
-        {
-            onError: (error) => {
-                console.error(error)
-            }
-        }
-    )
-
+    const query = useSearchParams()
+    const [page, setPage] = useState(1)
+    
+    const { data: lapangan, isLoading, refetch: refetchLapangan } = useFetchLapangan(page, 10, query.get("value") || "")
+    
+    useEffect(() => {
+        refetchLapangan()
+    },[page, query.get("value")])
     
 
-    // const [loading, setLoading] = useState(false)
-
-
-    // useEffect(() => {
-    //     // setTimeout(() => {
-    //     //     setLoading(true)
-    //     // }, 3000)
-    // }, [])
     const renderLapangan = () => {
         return lapangan?.data.data.lapangan?.map((item, index) => {
             const replaceName = item.name.replace(" ", "_")
@@ -44,9 +36,7 @@ const LapanganLayout = () => {
                         href={
                             {
                                 pathname: `/lapangan/${replaceName}`,
-                                query: {
-                                    id: item.id
-                                }
+                                query: { id: item.id }
                             }
                         }
                     >
@@ -91,23 +81,32 @@ const LapanganLayout = () => {
         ))
     }
 
-    const handlePagination = () => {
+    const renderPagination = () => {
         const numberPage = []
 
         for (let i = 0; i < lapangan?.data.data.totalPage; i++) {
             numberPage.push(i + 1)
         }
 
+        const handleNextButton = () => {
+            setPage(page + 1)
+        }
+        
+        const handleBackButton = () => {
+            if(page > 1) {
+                setPage(page - 1)
+            }
+        }
+
         return (
             <div className="join">
-                <button className={`join-item btn btn-outline ${lapangan?.data.data.prevPage ? "" : "btn-disabled"}`}>Back</button>
+                <button className={`join-item btn btn-outline ${lapangan?.data.data.prevPage ? "" : "btn-disabled"}`} onClick={handleBackButton}>Back</button>
                 {
                     numberPage.map((item, index) => (
                         <button key={index} className="join-item btn btn-outline">{item}</button>
-
                     ))
                 }
-                <button className={`join-item btn btn-outline ${lapangan?.data.data.nextPage ? "" : "btn-disabled"}`}>Next</button>
+                <button className={`join-item btn btn-outline ${lapangan?.data.data.nextPage ? "" : "btn-disabled"}`} onClick={handleNextButton}>Next</button>
             </div>
         )
     }
@@ -118,7 +117,7 @@ const LapanganLayout = () => {
                 {isLoading ? renderSkeletonLapangan() : renderLapangan()}
 
             </div>
-            {handlePagination()}
+            {renderPagination()}
         </div>
     )
 }

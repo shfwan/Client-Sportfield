@@ -2,17 +2,27 @@ import { axiosInstace } from "../lib/axios"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AuthHeader } from "./header"
 
-export const useFetchLapangan = ({ onError }) => {
+
+export const useFetchSearchLapangan = (value) => {
     return useQuery({
+        queryKey: ["fetch.lapangan.search"],
         queryFn: async () => {
-            return await axiosInstace.get("/api/v1/lapangan?page=1&limit=10")
-        },
-        queryKey: ["fetch.lapangan"],
-        onError
+            return await axiosInstace.get(`/api/v1/lapangan/search?value=${value}`)
+        }
     })
-    
 }
+
+export const useFetchLapangan = (page, limit, value) => {
     
+    return useQuery({
+        queryKey: ["fetch.lapangan"],
+        queryFn: async () => {
+            return await axiosInstace.get(`/api/v1/lapangan?page=${page}&limit=${limit}&value=${value}`)
+        },
+    })
+
+}
+
 export const usePostLapangan = ({ onSuccess }) => {
     return useMutation({
         mutationFn: async () => {

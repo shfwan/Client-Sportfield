@@ -8,8 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {  
   return (
     <main className="flex flex-col">
-      <Search/>
-      <LapanganLayout/>
+      <h1>Landing Page</h1>
     </main>
   );
 }
