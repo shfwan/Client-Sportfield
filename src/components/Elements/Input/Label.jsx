@@ -1,7 +1,6 @@
-const Label = (props) => {
-    const { htmlFor, children } = props
+const Label = ({ htmlFor, children }) => {
     return (
-        <label className='label text-black font-semibold text-xl' htmlFor={htmlFor}>{ children }</label>
+        <label className='label text-black font-semibold text-xl' htmlFor={htmlFor}>{children}</label>
     )
 }
 

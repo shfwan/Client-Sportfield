@@ -1,29 +1,25 @@
 "use client"
 
 import Button from "@/components/Elements/Button"
+import InputForm from "@/components/Elements/Input"
+import SelectInput from "@/components/Elements/Select Input"
+import Textarea from "@/components/Elements/Textarea"
+import FormLapanganTersedia from "@/components/Fragments/Form/FormLapanganTersedia"
 import ListLapanganTersedia from "@/components/Fragments/List/ListLapanganTersedia"
 import ListTanggal from "@/components/Fragments/List/ListTanggal"
 import ImagePreviewCaraousel from "@/components/Layouts/Detail Lapangan/ImagePreviewCaraouselLayout"
-import { useFetchByIdLapangan } from "@/features/detailLapangan"
-import { faker } from '@faker-js/faker'
-import { useQueries } from "@tanstack/react-query"
-import Image from "next/image"
+import ModalLayout from "@/components/Layouts/ModalLayout"
+import { useFetchByIdLapangan, usePostLapanganTersedia } from "@/features/detailLapangan"
+import { useQueryClient } from "@tanstack/react-query"
+import { useFormik } from "formik"
 import { useSearchParams } from 'next/navigation'
-import { useRouter } from "next/router"
 import React, { useState } from 'react'
 import { Map } from "react-feather"
+import * as yup from "yup"
 const DetailPage = () => {
     const state = useSearchParams()
-    const { data: detailLapangan, isLoading, error } = useFetchByIdLapangan(state.get("id"))
-    const router = useRouter()
+    const { data: detailLapangan, isLoading, error, refetch: refetchLapanganDetail } = useFetchByIdLapangan(state.get("id"))
 
-    if(error?.response.status == 500) {
-        router.push("/500")
-    } else if(error?.response.status == 404) {
-        router.push("/404")
-    }
-    console.log();
-    
 
     const renderOpenMap = () => {
         return (
@@ -38,6 +34,8 @@ const DetailPage = () => {
             </div>
         )
     }
+
+    const [add, setAdd] = useState(false)
 
     return (
         <div className="flex flex-col gap-4">
@@ -68,7 +66,16 @@ const DetailPage = () => {
             <h1 className="text-black text-xl font-semibold">Pilih Lapangan yang tersedia</h1>
 
             <ListTanggal />
-            <ListLapanganTersedia data={detailLapangan?.data.data} />
+
+            <button className="btn btn-success max-w-min font-bold text-white" onClick={() => setAdd(!add)}>Tambah lapangan</button>
+            <ModalLayout className="bg-white" open={add} onClick={() => setAdd(!add)}>
+                <FormLapanganTersedia onClick={() => setAdd(!add)}/>
+            </ModalLayout>
+
+            {
+                isLoading ? <span className="loading loading-dots loading-lg bg-slate-500"></span> : <ListLapanganTersedia data={isLoading ? null : detailLapangan?.data.data} />
+            }
+
         </div>
     )
 }

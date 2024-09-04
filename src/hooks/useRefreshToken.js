@@ -5,11 +5,13 @@ export const useRefreshToken = () => {
     const { data: session } = useSession()
 
     const refreshToken = async () => {
-        const res = await axios.post("/api/v2/auth/refreshToken", {
+        const res = await axios.post("/api/v1/auth/refreshToken", {
             refreshToken: session?.user.refreshToken
         })
         
-        if(session) session.user.token = res.data.data.token
+        if(session) {            
+            session.user.token = res.data.token
+        }
     }
     
     return refreshToken

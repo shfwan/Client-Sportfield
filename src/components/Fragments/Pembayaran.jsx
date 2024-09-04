@@ -1,15 +1,15 @@
 import React from 'react'
 import ModalLayout from '../Layouts/ModalLayout'
-import FormPembayaran from '@/components/Fragments/Form/FormPembayaran'
+// import FormPembayaran from '@/components/Fragments/Form/FormPembayaran'
 import { useOrderStore } from '@/store/orderStore'
 import ImagePreview from '../Elements/Image'
 import { faker } from '@faker-js/faker'
 import Button from '../Elements/Button'
-import ListJamLapangan from './List/Jam/ListJamLapangan'
+// import ListJamLapangan from './List/Jam/ListJamLapangan'
 
 const Pembayaran = () => {
     const [isOrder, setOrder] = useOrderStore((state) => [state.isOrder, state.setOrder])
-
+    
     return (
         <ModalLayout className="bg-white" open={isOrder} onClick={() => setOrder(!isOrder)} isBtnX={false}>
             <div className='flex flex-col gap-4'>
@@ -48,7 +48,7 @@ const Pembayaran = () => {
                         <h2>Rp. 100.000</h2>
                     </div>
                 </div>
-                <Button onClick={setOrder(!isOrder)} className="btn-success">Checkout</Button>
+                <Button onClick={() => setOrder(!isOrder)} className="btn-success">Checkout</Button>
             </div>
             {/* {
                 open ? (

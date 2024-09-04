@@ -26,7 +26,7 @@ const FormRegister = () => {
             try {
                 event.preventDefault()
                 await usePostRegister(formik.values).then(() => {
-                    router.push("/auth/login")
+                    router.push("/login")
 
                 }).catch(err => {
                     Swal.fire({
@@ -127,7 +127,7 @@ const FormRegister = () => {
                 </div>
                 <Button className="w-full btn-success text-white" type="submit">Daftar</Button>
             </form>
-            <span className='text-black'>Already have an account? <Link className="font-semibold text-success cursor-pointer hover:text-[#006a45]" href="/auth/login">Login</Link> </span>
+            <span className='text-black'>Already have an account? <Link className="font-semibold text-success cursor-pointer hover:text-[#006a45]" href="/login">Login</Link> </span>
         </div>
     )
 }

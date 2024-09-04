@@ -10,6 +10,6 @@ export const usePostRegister = (body) => {
 }
 
 export const usePostLogout = () => {
-    signOut({callbackUrl: "/"})
+    signOut()
     sessionStorage.clear()
 }

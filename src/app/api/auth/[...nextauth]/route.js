@@ -2,7 +2,8 @@ import axios from "@/lib/axios";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export default NextAuth({
+
+const authOption = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -23,16 +24,19 @@ export default NextAuth({
         })
     ],
     pages: {
-        signIn: "/auth/login",
+        signIn: "/login",
     },
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async jwt({ token, user }) {
             return { ...token, ...user }
         },
-        async session({ session, token, user }) {
+        async session({ session, token }) {            
             session.user = token
             return session
         }
     }
-})
+}
+const handler = NextAuth(authOption)
+
+export { handler as GET, handler as POST }

@@ -6,24 +6,24 @@ import CardLapanganSkeleton from '../../Fragments/CardLapangan/CardLapanganSkele
 import { Heart } from 'react-feather'
 import ImagePreview from '@/components/Elements/Image'
 import { useFetchLapangan } from '@/features/lapangan'
-import { useGetProfil } from '@/features/profil'
-import { Router } from 'next/router'
 import Link from 'next/link'
-import Image from 'next/image'
-import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Button from '@/components/Elements/Button'
+import ModalLayout from '../ModalLayout'
+import FormLapangan from '@/components/Fragments/Form/FormLapangan'
+import Pagination from '@/components/Fragments/Form/Pagination'
 
 const LapanganLayout = () => {
     const query = useSearchParams()
-    const [page, setPage] = useState(1)
-    
-    const { data: lapangan, isLoading, refetch: refetchLapangan } = useFetchLapangan(page, 10, query.get("value") || "")
-    
+    const [add, setAdd] = useState(false)
+
+    const { data: lapangan, isLoading, refetch: refetchLapangan } = useFetchLapangan(parseInt(query.get("page")) || 1, 5, query.get("value") || "")
+
     useEffect(() => {
         refetchLapangan()
-    },[page, query.get("value")])
-    
+    }, [query.get("page"), query.get("value")])
+
 
     const renderLapangan = () => {
         return lapangan?.data.data.lapangan?.map((item, index) => {
@@ -81,44 +81,19 @@ const LapanganLayout = () => {
         ))
     }
 
-    const renderPagination = () => {
-        const numberPage = []
-
-        for (let i = 0; i < lapangan?.data.data.totalPage; i++) {
-            numberPage.push(i + 1)
-        }
-
-        const handleNextButton = () => {
-            setPage(page + 1)
-        }
-        
-        const handleBackButton = () => {
-            if(page > 1) {
-                setPage(page - 1)
-            }
-        }
-
-        return (
-            <div className="join">
-                <button className={`join-item btn btn-outline ${lapangan?.data.data.prevPage ? "" : "btn-disabled"}`} onClick={handleBackButton}>Back</button>
-                {
-                    numberPage.map((item, index) => (
-                        <button key={index} className="join-item btn btn-outline">{item}</button>
-                    ))
-                }
-                <button className={`join-item btn btn-outline ${lapangan?.data.data.nextPage ? "" : "btn-disabled"}`} onClick={handleNextButton}>Next</button>
-            </div>
-        )
-    }
-
     return (
-        <div className='flex w-full h-fit flex-col items-center justify-center text-black gap-y-10'>
-            <div className="grid gap-5 xl:grid-cols-3 md:grid-cols-2 h-fit">
-                {isLoading ? renderSkeletonLapangan() : renderLapangan()}
-
+        <>
+            <div className='flex w-full h-fit flex-col items-center justify-center text-black gap-y-10'>
+                <Button className="btn-success" onClick={() => setAdd(!add)}>Tambah Lapangan</Button>
+                <div className="grid gap-5 xl:grid-cols-3 md:grid-cols-2 h-fit">
+                    {isLoading ? renderSkeletonLapangan() : renderLapangan()}
+                </div>
+                <Pagination item={lapangan?.data} />
             </div>
-            {renderPagination()}
-        </div>
+            <ModalLayout className="bg-white" open={add} onClick={() => setAdd(!add)}>
+                <FormLapangan onClick={() => setAdd(!add)} />
+            </ModalLayout>
+        </>
     )
 }
 

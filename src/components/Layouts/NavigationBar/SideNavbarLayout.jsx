@@ -1,13 +1,17 @@
-// import { useNavigate } from 'react-router-dom'
-// import Button from '../../Elements/Button'
+"use client"
+
+import Button from "@/components/Elements/Button"
+import { usePostLogout } from "@/features/auth"
 
 const SideNavbarLayout = () => {
     // const navigate = useNavigate()
     return (
-        <aside className='h-screen  fixed z-10'>
-            <nav className='h-full flex flex-col bg-white  border-r shadow-sm'>
+        <aside className='h-screen fixed z-20 min-w-64 a'>
+            <nav className='h-full flex flex-col bg-success  border-r shadow-sm'>
                 <ul className='flex flex-col items-start w-full justify-center gap-4'>
                     <li className=' btn'>Home</li>
+                    <Button className='btn-error' onClick={usePostLogout}>Keluar</Button>
+                    
                     {/* <Button className='btn-outline w-full' onClick={() => navigate("/")}>Home</Button>
                     <Button className='btn-outline w-full' onClick={() => navigate("pemesanan")}>Pemesanan</Button> */}
                     {/* {

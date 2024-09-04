@@ -4,9 +4,10 @@ import { getToken } from "next-auth/jwt";
 import { jwtDecode } from "jwt-decode";
 
 export async function middleware(req) {
-    
-    
-    const reqAuth = ["/riwayat", "/pemesanan", "/profil"]
+
+
+    const reqAuth = ["/riwayat", "/pemesanan", "/profil", "/dashboard"]
+    const adminOnly = ["/dashboard", "/riwayat", "/pemesanan", "/profil", "/management"]
 
     if (reqAuth.includes(req.nextUrl.pathname)) {
         const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
@@ -14,9 +15,10 @@ export async function middleware(req) {
         if (session) {
             const { role } = jwtDecode(session.token)
 
-            if(role === "administrator" && role === "customer") {
-                return NextResponse.redirect(new URL("/", req.url))
-            }
+            // if(role !== "provider" && adminOnly.includes(req.nextUrl.pathname)) {
+            //     return NextResponse.redirect(new URL("/", req.url))
+            // }
+
         } else {
             return NextResponse.redirect(new URL("/", req.url))
         }
@@ -27,5 +29,5 @@ export async function middleware(req) {
 
 // export default withAuth(middleware, ["/riwayat", "/pemesanan"])
 export const config = {
-    matcher: ["/riwayat", "/pemesanan/:path*", "/profil"],
+    matcher: ["/riwayat", "/pemesanan", "/pemesanan/:path*", "/profil", "/dashboard"],
 }

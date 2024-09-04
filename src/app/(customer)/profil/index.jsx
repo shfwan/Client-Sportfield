@@ -5,8 +5,6 @@ import { useGetProfil } from '@/features/profil'
 
 const ProfilPage = () => {
     const { data: profil, isLoading } = useGetProfil()
-
-    console.log(profil);
     
     return (
         <div className="flex flex-col gap-4 h-screen">

@@ -20,10 +20,31 @@ const TopNavbarLayout = () => {
     }
     const router = useRouter()
 
-    const handleLogin = () => {
-        signIn()
-    }
     const pathname = usePathname()
+
+    const renderStatusLogin = () => {
+        const handleLogin = () => {
+            signIn()
+        }
+
+        if (status === "authenticated") {
+            return (
+                <div className='inline-flex gap-4'>
+                    <Button className="whitespace-nowrap w-36  shadow-xl" onClick={() => router.push("/profil")}>
+                        <figure className='flex items-center gap-4 max-w-10'>
+                            <ImagePreview className='rounded-full aspect-square' width={35} src={`${process.env.NEXT_PUBLIC_API}/api/v1/user/picture/${session?.user.picture}`} alt="" />
+                        </figure>
+                        <span className='whitespace-nowrap text-black '>{session?.user.fullname.split(" ")[0]}</span>
+                    </Button>
+                    <Button className='btn-error' onClick={usePostLogout}>Keluar</Button>
+                </div>
+
+            )
+        } else {
+            return <Button className = 'btn-warning' onClick = { handleLogin }>Login</Button>
+        }
+
+    }
 
     return (
         <div className='flex w-full h-fit bg-success items-center justify-center sticky top-0 shadow-md p-2 z-20'>
@@ -38,31 +59,21 @@ const TopNavbarLayout = () => {
                     <Link href='/' className='w-fit hidden md:block'>
                         <h1 className=' text-3xl text-white font-semibold hover:scale-[101%] transition-transform'>SportFields</h1>
                     </Link>
-                    <Link href={{ pathname: "/lapangan" }} className='text-white font-semibold hover:scale-[101%] hover:font-bold'>Lapangan</Link>
-                    {
-                        status == "authenticated" ? (
-                            <div className='hidden sm:block'>
-                                <div className='flex w-fit gap-4'>
-                                    <ButtonActive className={pathname == "/" ? "text-success bg-white" : " text-white btn-outline"} to="/">Home</ButtonActive>
-                                    <ButtonActive className={pathname == "/pemesanan" ? "text-success bg-white" : " text-white btn-outline"} to="/pemesanan">Pemesanan</ButtonActive>
-                                    <ButtonActive className={pathname == "/riwayat" ? "text-success bg-white" : " text-white btn-outline"} to="/riwayat" >Riwayat</ButtonActive>
-                                </div>
-                            </div>
-                        ) : <></>
-                    }
-                    {
-                        status == "authenticated" ? (
-                            <div className='inline-flex gap-4'>
-                                <Button className="whitespace-nowrap w-36  shadow-xl" onClick={() => router.push("/profil")}>
-                                    <figure className='flex items-center gap-4 max-w-10'>
-                                        <ImagePreview className='rounded-full aspect-square' width={35} src={`${process.env.NEXT_PUBLIC_API}/api/v1/user/picture/${session?.user.picture}`} alt="" />
-                                    </figure>
-                                    <span className='whitespace-nowrap text-black '>{session?.user.fullname.split(" ")[0]}</span>
-                                </Button>
-                                <Button className='btn-error' onClick={usePostLogout}>Keluar</Button>
-                            </div>
-                        ) : <Button className='btn-warning' onClick={handleLogin}>Login</Button>
-                    }
+                    <div className='hidden sm:block'>
+                        <div className='flex w-fit gap-4 items-center'>
+                            <Link className={pathname == "/" ? "btn text-success bg-white" : " text-white font-semibold hover:scale-[101%] hover:font-bold"} href="/">Home</Link>
+                            <Link href="/lapangan?page=1" className={pathname == "/lapangan" ? "btn text-success bg-white" : " text-white font-semibold hover:scale-[101%] hover:font-bold"}>Lapangan</Link>
+                            {
+                                status == "authenticated" ? (
+                                    <>
+                                        <Link className={pathname == "/pemesanan" ? "btn text-success bg-white" : " text-white font-semibold hover:scale-[101%] hover:font-bold"} href="/pemesanan">Pemesanan</Link>
+                                        <Link className={pathname == "/riwayat" ? "btn text-success bg-white" : " text-white font-semibold hover:scale-[101%] hover:font-bold"} href="/riwayat" >Riwayat</Link>
+                                    </>
+                                ) : <></>
+                            }
+                        </div>
+                    </div>
+                    {renderStatusLogin()}
                 </ul>
                 <MenuNavbar showMenu={showMenu} active={active} />
             </nav>

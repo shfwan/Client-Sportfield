@@ -1,6 +1,6 @@
+"use client"
 import EmptyData from '@/components/Fragments/EmptyData'
 import { useFetchOrder } from '@/features/order'
-import useAxiosAuth from '@/hooks/useAxiosAuth'
 import React from 'react'
 
 const PemesananPage = () => {

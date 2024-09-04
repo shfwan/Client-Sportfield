@@ -1,6 +1,7 @@
-import { axiosInstace } from "../lib/axios"
+import axios, { axiosInstace } from "../lib/axios"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AuthHeader } from "./header"
+import useAxiosAuth from "@/hooks/useAxiosAuth"
 
 
 export const useFetchSearchLapangan = (value) => {
@@ -16,21 +17,22 @@ export const useFetchLapangan = (page, limit, value) => {
     
     return useQuery({
         queryKey: ["fetch.lapangan"],
-        queryFn: async () => {
-            return await axiosInstace.get(`/api/v1/lapangan?page=${page}&limit=${limit}&value=${value}`)
+        queryFn: async () => {            
+            return await axios.get(`/api/v1/lapangan?page=${page}&limit=${limit}&value=${value}`)
         },
     })
 
 }
 
 export const usePostLapangan = ({ onSuccess }) => {
+    const axiosAuth = useAxiosAuth()
+
     return useMutation({
-        mutationFn: async () => {
-            return await axiosInstace.post("/api/v2/lapangan", data, {
-                headers: AuthHeader()
-            })
+        mutationKey: ["post.lapangan"],
+        mutationFn: async (body) => {            
+            return await axiosAuth.post("/api/v2/lapangan", body)
         },
-        onSuccess: onSuccess
+        onSuccess
     })
 }
 

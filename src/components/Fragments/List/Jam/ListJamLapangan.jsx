@@ -10,10 +10,7 @@ const ListJamLapangan = ({ lapangan }) => {
 
     const { data: jam, refetch: refetchJam } = useListJam(lapangan, date)
 
-    useEffect(() => { refetchJam() }, [date])
-
-    console.log(jam);
-    
+    useEffect(() => { refetchJam() }, [date])    
 
     const renderJamLapangan = () => {
         return jam?.data.data?.jadwal.map((item, index) => (<ListJam key={item.id} item={item} />))

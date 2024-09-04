@@ -1,17 +1,16 @@
-import { useRouter } from 'next/router'
+"use client"
+
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 
 const Search = () => {
+    const query = useSearchParams()
     const router = useRouter()
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState(query.get("value") || "")
     
     
     const handleSearch = () => {
-        router.push({
-            query: {
-                value: search
-            }
-        })
+        router.push('?value=' + search)
     }
     return (
         <div className='inline-flex max-w-2xl  gap-x-4'>

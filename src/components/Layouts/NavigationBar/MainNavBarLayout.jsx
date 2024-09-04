@@ -1,30 +1,29 @@
-// import React from 'react'
+"use client"
+
 import { jwtDecode } from 'jwt-decode'
-import { useEffect, useState } from 'react'
 import TopNavbarLayout from './TopNavbarLayout'
-import Link from 'next/link'
-import { useStoreSportField } from '@/store/store'
-import { usePostLogout } from '@/features/auth'
 import SideNavbarLayout from './SideNavbarLayout'
 import { useSession } from 'next-auth/react'
 
 const NavBar = () => {
-    const [role, setRole] = useState("customer")
     const { data: session } = useSession()
     
-    useEffect(() => {
+    const renderNavigate = () => {
         if(session) {
-            setRole(jwtDecode(session.user.token).role)
+            const role = jwtDecode(session.user.token).role
+            
+            if(role === "provider" || role === "administrator") {
+                return <SideNavbarLayout/>
+            } else {
+                return <TopNavbarLayout/>
+            }
+        } else {
+            return <TopNavbarLayout/>
         }
-        
-    },[session])
-    
+    }
     return (
         <div className='bg-[#f8fafc] text-black sticky top-0 z-50'>
-            {/* {
-                !session && (role != "customer" && role == "administrator") ? <TopNavbarLayout /> : <SideNavbarLayout />
-            } */}
-            <TopNavbarLayout />
+            {renderNavigate()}
         </div>
     )
 }

@@ -4,18 +4,18 @@ import { useFormik } from "formik"
 import Button from "@/components/Elements/Button"
 import InputForm from "@/components/Elements/Input"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import * as yup from "yup"
 import Swal from "sweetalert2"
 import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { useSearchParams } from "next/navigation"
+import { getSession, signIn } from "next-auth/react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { jwtDecode } from "jwt-decode"
 
 const FormLogin = () => {
     const router = useRouter()
     const callbackParams = useSearchParams()
     const [isLoading, setIsLoading] = useState(false)
-    
+
     const formik = useFormik({
         initialValues: {
             user: "",
@@ -30,10 +30,24 @@ const FormLogin = () => {
                     user: formik.values.user,
                     password: formik.values.password,
                     callbackUrl: callbackParams.get("callbackUrl") || "/lapangan",
-                })   
-                
+                })
+
                 if (res.ok) {
-                    router.push(callbackParams.get("callbackUrl") || "/lapangan")
+                    const session = await getSession()
+
+                    if (session) {
+                        const role = jwtDecode(session.user.token).role
+                        
+                        if (role === "customer") {
+                            router.push(callbackParams.get("callbackUrl") || "/lapangan")
+                        } else if (role === "provider") {
+                            router.push("/dashboard")
+                        } else if (role === "administrator") {
+                            router.push("/dashboard")
+                        }
+                    }
+                    console.log();
+
                 } else {
                     throw new Error(res.error)
                 }
@@ -45,7 +59,7 @@ const FormLogin = () => {
                     title: "Oops...",
                     text: error.message,
                 }).then((result) => {
-                    if(result.isConfirmed) {
+                    if (result.isConfirmed) {
                         window.location.reload()
                     }
                 })
@@ -93,7 +107,7 @@ const FormLogin = () => {
                 />
                 <Button className={`btn-wide btn-success text-white ${isLoading ? "btn-disabled" : ""}`} type="submit">{isLoading ? handleLoading() : "Login"}</Button>
             </form>
-            <span className='text-black'>Don't have an account yet? <Link className="font-semibold text-success cursor-pointer hover:text-[#006a45]" href="/auth/register">Register</Link> </span>
+            <span className='text-black'>Don't have an account yet? <Link className="font-semibold text-success cursor-pointer hover:text-[#006a45]" href="/register">Register</Link> </span>
         </div>
     )
 }
