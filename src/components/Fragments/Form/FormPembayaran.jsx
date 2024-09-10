@@ -4,7 +4,7 @@ import { useFormik } from "formik"
 import { useCheckOut } from "@/features/order"
 import { useOrderStore } from "@/store/orderStore"
 
-const FormPembayaran = ({ onClick = () => { } }) => {
+const FormPembayaran = ({ item, onClick = () => { } }) => {
     const [date, jam] = useOrderStore((state) => [state.date, state.jam])
     const formik = useFormik({
         initialValues: {

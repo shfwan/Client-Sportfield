@@ -29,7 +29,8 @@ export const usePostLapanganTersedia = ({ onSuccess }) => {
 
     return useMutation({
         mutationKey: ["post.lapanganTersedia"],
-        mutationFn: async (body) => {            
+        mutationFn: async (body) => {
+            console.log(body);       
             return await axiosAuth.post(`/api/v2/lapangan/${body.id}`, body)
         },
         onSuccess,

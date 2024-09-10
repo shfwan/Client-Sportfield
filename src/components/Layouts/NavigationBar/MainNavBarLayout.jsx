@@ -13,7 +13,9 @@ const NavBar = () => {
             const role = jwtDecode(session.user.token).role
             
             if(role === "provider" || role === "administrator") {
-                return <SideNavbarLayout/>
+                // return <SideNavbarLayout/>
+                return <TopNavbarLayout/>
+
             } else {
                 return <TopNavbarLayout/>
             }

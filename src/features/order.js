@@ -5,12 +5,8 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 export const useCheckOut = ({ onSuccess }) => {
     const axiosAuth = useAxiosAuth()
     return useMutation({
-        mutationFn: async (id, data) => {
-            // return await axiosInstace.post(`/api/v2/order/lapangan/${id.lapanganId}/information/${id.id}/checkout`, data, {
-            //     headers: {
-            //         Authorization: `Bearer ${token}`
-            //     }
-            // })
+        mutationFn: async (body) => {
+            return await axiosAuth.post(`/api/v2/order/lapangan/${body.lapanganId}/information/${body.id}/checkout`, body)
         },
         onSuccess
     })
@@ -20,7 +16,7 @@ export const useFetchOrder = () => {
     const axiosAuth = useAxiosAuth()
 
     return useQuery({
-        queryKey: ["fetch.order"],
+        queryKey: ["fetch.pemesanan"],
         queryFn: async () => {
             return await axiosAuth.get("/api/v2/order")
         }

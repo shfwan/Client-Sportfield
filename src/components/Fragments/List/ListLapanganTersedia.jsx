@@ -8,9 +8,7 @@ import { useOrderStore } from '@/store/orderStore';
 import { useFetchLapanganTersedia } from '@/features/detailLapangan';
 
 const ListLapanganTersedia = ({ data }) => {
-    
-    const date = useOrderStore((state) => state.date)
-    
+        
     const { data: lapanganTersedia, isLoading } = useQuery({
         queryKey: ["fetch.lapanganTersedia"],
         queryFn: async () => {

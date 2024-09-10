@@ -3,7 +3,6 @@ import CardLapangan from './CardLapangan'
 import Caraousel from '../Caraousel/Caraousel'
 import ImagePreview from '@/components/Elements/Image'
 import Button from '@/components/Elements/Button'
-import Pembayaran from '../Pembayaran'
 import DropdownLayout from '@/components/Layouts/DropdownLayout'
 import ListJamLapangan from '../List/Jam/ListJamLapangan'
 import { Clock, Edit, Trash2 } from 'react-feather'
@@ -18,6 +17,7 @@ import ModalLayout from '@/components/Layouts/ModalLayout'
 import InputForm from '@/components/Elements/Input'
 import Textarea from '@/components/Elements/Textarea'
 import SelectInput from '@/components/Elements/Select Input'
+import Checkout from '../Checkout'
 
 const CardLapanganTersedia = ({ lapanganTersedia }) => {
 
@@ -38,6 +38,7 @@ const CardLapanganTersedia = ({ lapanganTersedia }) => {
         faker.image.url(),
         faker.image.url(),
     ]
+    
 
     const handleOrderClick = () => {
         setOrder(!isOrder)
@@ -161,7 +162,7 @@ const CardLapanganTersedia = ({ lapanganTersedia }) => {
                         <Button className="btn-success" onClick={handleOrderClick}>Order sekarang</Button>
 
                         {/* Modal Order */}
-                        <Pembayaran key={lapanganTersedia.id} />
+                        <Checkout item={lapanganTersedia} key={lapanganTersedia.id} />
 
                         {/* Dropdown Select Jam */}
                         {/* <DropdownLayout className="bg-white w-full absolute xl:relative gap-4 -translate-x-[9.3rem] md:-translate-x-[5.3rem] " icon={<Clock />} title="Pilih Jam" >

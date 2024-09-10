@@ -7,7 +7,7 @@ import { useFormik } from 'formik'
 import React from 'react'
 import * as yup from 'yup'
 
-const FormLapanganTersedia = ({onClick}) => {
+const FormLapanganTersedia = ({ id, onClick }) => {
     const queryClient = useQueryClient()
 
     const { mutate: createLapanganTersedia } = usePostLapanganTersedia({
@@ -29,7 +29,7 @@ const FormLapanganTersedia = ({onClick}) => {
             event.preventDefault()
 
             createLapanganTersedia({
-                id: state.get("id"),
+                id: id,
                 name: formik.values.name,
                 description: formik.values.description,
                 statusLapangan: formik.values.statusLapangan,

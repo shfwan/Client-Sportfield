@@ -7,10 +7,9 @@ const ListJamLapangan = ({ lapangan }) => {
 
     const [date] = useOrderStore((state) => [state.date, state.setJam, state.removeJam])
 
-
     const { data: jam, refetch: refetchJam } = useListJam(lapangan, date)
 
-    useEffect(() => { refetchJam() }, [date])    
+    useEffect(() => { refetchJam() }, [date])
 
     const renderJamLapangan = () => {
         return jam?.data.data?.jadwal.map((item, index) => (<ListJam key={item.id} item={item} />))
@@ -18,6 +17,7 @@ const ListJamLapangan = ({ lapangan }) => {
 
     return jam?.data.data.jadwal.length > 0 ? (
         <div className='grid grid-cols-4 w-full xl:grid-cols-4 gap-2 place-items-center'>
+            
             {renderJamLapangan()}
         </div>
     ) : (

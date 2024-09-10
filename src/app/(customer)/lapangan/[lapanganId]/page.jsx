@@ -69,7 +69,7 @@ const DetailPage = () => {
 
             <button className="btn btn-success max-w-min font-bold text-white" onClick={() => setAdd(!add)}>Tambah lapangan</button>
             <ModalLayout className="bg-white" open={add} onClick={() => setAdd(!add)}>
-                <FormLapanganTersedia onClick={() => setAdd(!add)}/>
+                <FormLapanganTersedia id={state.get("id")} onClick={() => setAdd(!add)}/>
             </ModalLayout>
 
             {
