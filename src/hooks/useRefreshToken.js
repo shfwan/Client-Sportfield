@@ -8,11 +8,11 @@ export const useRefreshToken = () => {
         const res = await axios.post("/api/v1/auth/refreshToken", {
             refreshToken: session?.user.refreshToken
         })
-        
-        if(session) {            
+
+        if (session) {
             session.user.token = res.data.token
         }
     }
-    
+
     return refreshToken
 }

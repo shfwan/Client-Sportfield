@@ -9,7 +9,7 @@ const authOption = {
             name: "Credentials",
             type: "credentials",
             credentials: {},
-            async authorize(credentials, req) {
+            async authorize(credentials) {
                 const body = {
                     user: credentials?.user,
                     password: credentials?.password
@@ -33,6 +33,7 @@ const authOption = {
         },
         async session({ session, token }) {            
             session.user = token
+            
             return session
         }
     }

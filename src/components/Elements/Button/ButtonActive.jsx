@@ -1,16 +1,17 @@
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 
-const ButtonActive = ({ className, type = "button", to, children }) => {
-  const Active = ({ isActive }) => {
-    return {
-      backgroundColor: isActive ? "white" : "transparent",
-      color: isActive ? ["#14A44D"] : "white",
-    }
-  }
+const ButtonActive = ({ onClick, to, children }) => {
+  const pathname = usePathname()
 
   return (
-    <Link className={`btn font-semibold whitespace-nowrap ${className}`} type={type} href={to} >{children}</Link>
+    <Link
+      className={pathname == to ? "btn text-success bg-white min-w-56" : "btn btn-outline border-none  text-white font-semibold hover:scale-[101%] hover:font-bold"} href={to}
+      onClick={onClick}>
+      {children}
+    </Link>
+
   )
 }
 

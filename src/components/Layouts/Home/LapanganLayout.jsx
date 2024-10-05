@@ -1,24 +1,21 @@
 "use client"
 
-import CardLapangan from '@/components/Fragments/CardLapangan/CardLapangan'
+import CardLapangan from '@/components/Fragments/Card/CardLapangan/CardLapangan'
 import { faker } from '@faker-js/faker'
-import CardLapanganSkeleton from '../../Fragments/CardLapangan/CardLapanganSkeleton'
+import CardLapanganSkeleton from '../../Fragments/Card/CardLapangan/CardLapanganSkeleton'
 import { Heart } from 'react-feather'
 import ImagePreview from '@/components/Elements/Image'
 import { useFetchLapangan } from '@/features/lapangan'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Button from '@/components/Elements/Button'
-import ModalLayout from '../ModalLayout'
-import FormLapangan from '@/components/Fragments/Form/FormLapangan'
 import Pagination from '@/components/Fragments/Form/Pagination'
+import EmptyData from '@/components/Fragments/EmptyData'
 
 const LapanganLayout = () => {
     const query = useSearchParams()
-    const [add, setAdd] = useState(false)
 
-    const { data: lapangan, isLoading, refetch: refetchLapangan } = useFetchLapangan(parseInt(query.get("page")) || 1, 5, query.get("value") || "")
+    const { data: lapangan, isLoading, refetch: refetchLapangan } = useFetchLapangan(parseInt(query.get("page")) || 1, 10, query.get("value") || "")
 
     useEffect(() => {
         refetchLapangan()
@@ -40,22 +37,16 @@ const LapanganLayout = () => {
                             }
                         }
                     >
-                        <CardLapangan className=" w-[22rem] h-[26rem] cursor-pointer">
+                        <CardLapangan className="cursor-pointer">
                             <CardLapangan.Header>
-                                <figure>
+                                <figure className='max-w-96'>
                                     <ImagePreview
+                                        className="rounded-t-xl"
+
                                         src={faker.image.url()}
                                         alt="Shoes"
                                         loading="lazy"
                                     />
-                                    {/* <Image
-                                        src={`https://images.pexels.com/photos/47547/squirrel-animal-cute-rodents-47547.jpeg`}
-                                        alt='card'
-                                        width={100}
-                                        height={100}
-                                        className='transition-opacity opacity-0 duration-[2s]'
-                                        onLoadingComplete={(image) => image.classList.remove('opacity-0')}
-                                    /> */}
                                 </figure>
                             </CardLapangan.Header>
                             <CardLapangan.Body className="card-body">
@@ -82,18 +73,14 @@ const LapanganLayout = () => {
     }
 
     return (
-        <>
-            <div className='flex w-full h-fit flex-col items-center justify-center text-black gap-y-10'>
-                <Button className="btn-success" onClick={() => setAdd(!add)}>Tambah Lapangan</Button>
-                <div className="grid gap-5 xl:grid-cols-3 md:grid-cols-2 h-fit">
-                    {isLoading ? renderSkeletonLapangan() : renderLapangan()}
-                </div>
-                <Pagination item={lapangan?.data} />
+        <div className='flex w-full h-fit flex-col items-center justify-between text-black gap-y-10 min-h-screen'>
+            <div className="grid grid-cols-1 gap-4 auto-rows-max sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2">
+                {isLoading ? renderSkeletonLapangan() : lapangan?.data.data.lapangan.length > 0 ? renderLapangan() : (<EmptyData title="Lapangan tidak ada" />)}
             </div>
-            <ModalLayout className="bg-white" open={add} onClick={() => setAdd(!add)}>
-                <FormLapangan onClick={() => setAdd(!add)} />
-            </ModalLayout>
-        </>
+            
+            {isLoading ? <span className='skeleton w-56'></span> : <Pagination item={lapangan?.data} />}
+
+        </div>
     )
 }
 

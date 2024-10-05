@@ -1,24 +1,48 @@
 "use client"
 
+import { useQueryClient } from '@tanstack/react-query'
+import { useFormik } from 'formik'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useState } from 'react'
+import React from 'react'
+import { Search as SearchIcon } from 'react-feather'
 
 const Search = () => {
+    const queryClient = useQueryClient()
     const query = useSearchParams()
     const router = useRouter()
-    const [search, setSearch] = useState(query.get("value") || "")
     
-    
-    const handleSearch = () => {
-        router.push('?value=' + search)
+    const formik = useFormik({
+        initialValues: {
+            value: query.get("value") || ""
+        },
+        onSubmit: async () => {
+            event.preventDefault()
+            if(formik.values.value !== "") {
+                router.push('?value=' + formik.values.value)
+                queryClient.invalidateQueries()
+            }
+        }
+    })
+
+    const handleFormikInput = (event) => {
+        formik.setFieldValue(event.target.name, event.target.value)
     }
     return (
-        <div className='inline-flex max-w-2xl  gap-x-4'>
-            <div className='border max-w-2xl'>
-                <input className='input input-md w-full' type="search" name="search" id="" onChange={(e) => setSearch(e.target.value)} />
+        <form onSubmit={formik.handleSubmit}>
+            <div className='flex items-center justify-between bg-white w-full mt-3 px-3 py-2 text-xl rounded-md shadow shadow-black/20 border border-white'>
+                <input
+                    name='value'
+                    type='text'
+                    placeholder='Search'
+                    className='text-black bg-white w-full outline-none text-lg'
+                    value={formik.values.value}
+                    onChange={handleFormikInput}
+                />
+                <button className='btn btn-success w-fit px-2 h-fit' type="submit">
+                    <SearchIcon color='white' size={24} />
+                </button>
             </div>
-            <button className='btn' type="button" onClick={handleSearch}>search</button>
-        </div>
+        </form>
     )
 }
 

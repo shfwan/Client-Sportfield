@@ -7,8 +7,8 @@ import Link from "next/link"
 import * as yup from "yup"
 import Swal from "sweetalert2"
 import { useState } from "react"
-import { getSession, signIn } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { getSession, signIn, useSession } from "next-auth/react"
+import { redirect, useRouter, useSearchParams } from "next/navigation"
 import { jwtDecode } from "jwt-decode"
 
 const FormLogin = () => {
@@ -37,7 +37,7 @@ const FormLogin = () => {
 
                     if (session) {
                         const role = jwtDecode(session.user.token).role
-                        
+
                         if (role === "customer") {
                             router.push(callbackParams.get("callbackUrl") || "/lapangan")
                         } else if (role === "provider") {
@@ -46,7 +46,6 @@ const FormLogin = () => {
                             router.push("/dashboard")
                         }
                     }
-                    console.log();
 
                 } else {
                     throw new Error(res.error)
@@ -58,10 +57,6 @@ const FormLogin = () => {
                     icon: "error",
                     title: "Oops...",
                     text: error.message,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload()
-                    }
                 })
             }
         },
@@ -81,11 +76,12 @@ const FormLogin = () => {
 
     const handleLoading = () => (<span className="loading loading-spinner loading-md"></span>)
     return (
-        <div className='flex flex-col h-fit items-center p-4 gap-4'>
-            <form className="flex flex-col gap-4" onSubmit={formik.handleSubmit}>
+        <div className='flex flex-col w-full h-fit max-w-96 items-center gap-4'>
+            <form className="flex flex-col items-center w-full gap-4 bg-white p-8 rounded-lg" onSubmit={formik.handleSubmit} method="POST">
+                <label className="font-bold text-2xl text-success">Login</label>
                 <InputForm
                     name="user"
-                    title="User"
+                    title="Email / Nomor Hp"
                     className="w-full"
                     type="text"
                     placeholder="Email atau Nomor HP"
@@ -105,9 +101,10 @@ const FormLogin = () => {
                     value={formik.values.password}
                     isInvalid={formik.errors.password}
                 />
-                <Button className={`btn-wide btn-success text-white ${isLoading ? "btn-disabled" : ""}`} type="submit">{isLoading ? handleLoading() : "Login"}</Button>
+                <Button className={`btn-success bg-[#008c6e] text-white w-full rounded-full ${isLoading ? "btn-disabled" : ""}`} type="submit">{isLoading ? handleLoading() : "Login"}</Button>
             </form>
-            <span className='text-black'>Don't have an account yet? <Link className="font-semibold text-success cursor-pointer hover:text-[#006a45]" href="/register">Register</Link> </span>
+            <span className='text-white font-medium text-lg'>Don't have an account yet?</span>
+            <Link className="btn w-full rounded-full bg-white font-semibold text-success cursor-pointer hover:text-[#006a45]" href="/register">Register</Link>
         </div>
     )
 }

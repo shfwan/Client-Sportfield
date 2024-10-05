@@ -4,13 +4,15 @@ import { useFormik } from "formik"
 import { usePostRegister } from "@/features/auth"
 import Button from "@/components/Elements/Button"
 import InputForm from "@/components/Elements/Input"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import Swal from "sweetalert2"
 import * as yup from "yup"
 
 const FormRegister = () => {
     const router = useRouter()
+    const query = useSearchParams()
+
     // const { setMsg } = useAppStore()
 
     const formik = useFormik({
@@ -19,25 +21,22 @@ const FormRegister = () => {
             lastname: "",
             email: "",
             phone: "",
+            role: query.get("t") == undefined ? btoa("customer") : query.get("t"),
             password: "",
             confirmPassword: "",
         },
-        onSubmit: async () => {
-            try {
-                event.preventDefault()
-                await usePostRegister(formik.values).then(() => {
-                    router.push("/login")
+        onSubmit: () => {
+            event.preventDefault()
+            usePostRegister(formik.values).then(() => {
+                router.push("/login")
 
-                }).catch(err => {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: err.response.data.message,
-                    })
+            }).catch(err => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.response.data.message,
                 })
-            } catch (error) {
-                console.log(error);
-            }
+            })
         },
         validationSchema: yup.object().shape({
             firstname: yup.string().min(3, "Firstname must be at least 3 characters"),
@@ -54,9 +53,11 @@ const FormRegister = () => {
     }
 
     return (
-        <div className='flex flex-col items-center p-4 gap-4'>
-            <form className="flex flex-col gap-4 overflow-hidden" onSubmit={formik.handleSubmit} method="post">
-                <div className="grid p-2 gap-4 xl:grid-cols-2">
+        <div className='flex flex-col w-full max-w-2xl items-center gap-4'>
+            <form className="flex flex-col w-full items-center p-4 md:p-8 gap-4 overflow-hidden bg-white rounded-lg" onSubmit={formik.handleSubmit} method="post">
+                <label className="font-bold text-2xl text-success">Daftar</label>
+
+                <div className="grid p-2 gap-4 xl:grid-cols-2 w-full">
                     <InputForm
                         name="firstname"
                         title="Firstname"
@@ -125,9 +126,11 @@ const FormRegister = () => {
                     />
 
                 </div>
-                <Button className="w-full btn-success text-white" type="submit">Daftar</Button>
+                <Button className="w-full max-w-80 btn-success bg-[#008c6e] rounded-full text-white" type="submit">Daftar</Button>
             </form>
-            <span className='text-black'>Already have an account? <Link className="font-semibold text-success cursor-pointer hover:text-[#006a45]" href="/login">Login</Link> </span>
+            <span className='text-white font-medium text-lg'>Do you have an account?</span>
+            <Link className="btn w-full max-w-80 rounded-full bg-white font-semibold text-success cursor-pointer hover:text-[#006a45]" href="/login">Login</Link>
+
         </div>
     )
 }

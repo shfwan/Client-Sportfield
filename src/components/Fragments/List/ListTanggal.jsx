@@ -11,8 +11,7 @@ const ListTanggal = () => {
     const [date, setDate] = useOrderStore((state) => [state.date, state.setDate])
 
     return (
-        <div className="rounded-md p-4 border overflow-x-auto w-full md:w-fit">
-            <div className="flex gap-4 ">
+            <div className="inline-flex items-start justify-start gap-4">
                 <RadioGroup value={date} onChange={(e) => setDate(e.target.value)}>
                     {
                         Array.from({ length: 7 }).map((_, i) => (
@@ -24,7 +23,6 @@ const ListTanggal = () => {
                     <AppCalendar />
                 </DropdownLayout>
             </div>
-        </div>
     )
 }
 

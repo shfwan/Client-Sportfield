@@ -1,14 +1,23 @@
-import MainLayout from '@/components/Layouts/MainLayout'
-import SideNavbarLayout from '@/components/Layouts/NavigationBar/SideNavbarLayout'
+"use client"
+
+import AdminLayout from "@/components/Layouts/AdminLayout"
+import { socketInstance } from "@/lib/socket"
+import { usePathname } from "next/navigation"
+import { useEffect } from "react"
+import { toast } from "react-toastify"
 
 const layout = ({ children }) => {
+  const pathname = usePathname()
+
+  useEffect(() => {
+    socketInstance.on("receive_checkout", () => {
+      toast.info("Ada Pesanan baru bang")
+    })
+  }, [socketInstance])
   return (
-    <>
-      {/* <SideNavbarLayout/> */}
-      <MainLayout>
-        {children}
-      </MainLayout>
-    </>
+    <AdminLayout>
+      {children}
+    </AdminLayout>
   )
 }
 

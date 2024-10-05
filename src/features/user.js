@@ -1,29 +1,26 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { axiosInstace } from "@/lib/axios"
+import useAxiosAuth from "@/hooks/useAxiosAuth"
 
 export const useFetchUser = ({ onError }) => {
 
     return useQuery({
         queryFn: async () => {
-            return await axiosInstace.get("/api/v1/user")
+            return await axiosInstace.get("/api/v2/user")
         },
         queryKey: ["fetch.user"],
         onError
     })
 }
 
-export const useFetchByIdUser = ({ onError }) => {
-
+export const useFetchByIdUser = (id) => {
+    const axiosAuth = useAxiosAuth()
     return useQuery({
+        queryKey: ["fetch.user",id],
         queryFn: async () => {
-            return await axiosInstace.get("/api/v2/user/information", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            return await axiosAuth.get(`/api/v2/user/information?id=${id}`)
         },
-        queryKey: ["fetch.user"],
-        onError
+        // onError
     })
 }
 

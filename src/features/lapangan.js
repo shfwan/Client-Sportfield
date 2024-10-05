@@ -14,9 +14,8 @@ export const useFetchSearchLapangan = (value) => {
 }
 
 export const useFetchLapangan = (page, limit, value) => {
-    
     return useQuery({
-        queryKey: ["fetch.lapangan"],
+        queryKey: ["fetch.lapangan", page, value],
         queryFn: async () => {            
             return await axios.get(`/api/v1/lapangan?page=${page}&limit=${limit}&value=${value}`)
         },
@@ -37,23 +36,23 @@ export const usePostLapangan = ({ onSuccess }) => {
 }
 
 export const useUpdateLapangan = ({ onSuccess }) => {
+    const axiosAuth = useAxiosAuth()
+    
     return useMutation({
-        mutationFn: async (data) => {
-            return await axiosInstace.patch(`/api/v1/lapangan/${data.id}`, data, {
-                headers: AuthHeader()
-            })
+        mutationFn: async (body) => {
+            return await axiosAuth.patch(`/api/v2/lapangan/${body.id}`, body.data)
         },
         onSuccess: onSuccess
     })
 }
 
-export const useDeleteLapangan = ({ onSuccess }) => {
+export const useDeleteLapangan = ({ onSuccess, onError }) => {
+    const axiosAuth = useAxiosAuth()
     return useMutation({
         mutationFn: async (id) => {
-            return await axiosInstace.delete(`/api/v1/lapangan/${id}`, {
-                headers: AuthHeader()
-            })
+            return await axiosAuth.delete(`/api/v2/lapangan/${id}`)
         },
-        onSuccess: onSuccess
+        onSuccess,
+        onError
     })
 }

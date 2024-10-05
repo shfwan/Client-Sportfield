@@ -1,11 +1,13 @@
+import Footer from '@/components/Layouts/Footer'
 import MainLayout from '@/components/Layouts/MainLayout'
 import React from 'react'
 
 const layout = ({ children }) => {
   return (
-    <MainLayout>
+    <main className='block'>
       {children}
-    </MainLayout>
+      <Footer />
+    </main>
   )
 }
 

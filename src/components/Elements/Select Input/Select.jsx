@@ -1,8 +1,9 @@
 import React from 'react'
 
-const Select = ({name, children, value, onChange }) => {
+const Select = ({ id, name, children, value, onChange }) => {
     return (
-        <select name={name} value={value} onChange={onChange} className='select select-bordered w-full max-w-xs'>
+        <select id={id} name={name} defaultValue={value} onChange={onChange} className='select select-bordered w-full max-w-xs'>
+            <option disabled value="Pilih">Pilih</option>
             {children}
         </select>
     )

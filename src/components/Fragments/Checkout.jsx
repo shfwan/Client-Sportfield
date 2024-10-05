@@ -37,7 +37,6 @@ const Checkout = ({ item }) => {
     const { mutate: createOrder } = useCheckOut(
         {
             onSuccess: (data) => {
-                console.log(data.data.data.token);
                 window.snap.pay(data.data.data.token)
             }
         }

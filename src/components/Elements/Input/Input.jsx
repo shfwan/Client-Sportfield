@@ -13,7 +13,7 @@ const Input = (
     return (
         <input
             id={id}
-            className={`w-full font-semibold bg-transparent border-2
+            className={`w-full lg:w-full font-semibold bg-transparent border-2
             input input-md input-bordered  rounded-md  outline-none
             ${isInvalid ? 'input-error' : ''}`}
             type={type}
@@ -23,6 +23,7 @@ const Input = (
             onChange={onChange}
             value={value}
             disabled={disabled}
+            step={3600000}
         />
     )
 }

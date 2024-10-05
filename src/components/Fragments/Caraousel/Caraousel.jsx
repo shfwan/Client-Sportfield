@@ -16,10 +16,10 @@ const Caraousel = ({ className = "", maxWidth, children, autoSlide = true, autoS
 
     return (
         <>
-        <div className={`max-w-[${maxWidth}] margin-auto ${className}`}>
+        <div className={`margin-auto ${className}`}>
                 <div className="overflow-x-hidden relative aspect-auto rounded-xl">
                     {/* Image */}
-                    <figure className="flex transition-transform ease-out duration-500 snap-mandatory scroll-smooth" style={{ transform: `translateX(-${curr * 100}%)` }}>
+                    <figure className="flex transition-transform ease-out duration-500 snap-mandatory scroll-smooth max-w-full max-h-[40rem]" style={{ transform: `translateX(-${curr * 100}%)` }}>
                         {children}
                     </figure>
 

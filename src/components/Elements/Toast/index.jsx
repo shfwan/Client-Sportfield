@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 
 const Toast = ({ className, children }) => {
     const [msg, setMsg] = useState(null)
+    
     useEffect(() => {
         const timer = setTimeout(() => {
             setMsg(null)
@@ -12,11 +13,13 @@ const Toast = ({ className, children }) => {
         }
     }, [msg])
 
-    return msg ? (
-        <div className={`fixed w-fit bottom-4 transition-opacity left-4 alert text-white rounded-md ${className}`}>
-            <span>{children}</span>
+    return (
+        <div className="toast toast-bottom toast-end z-50 translate-x-72">
+            <div className="alert alert-success text-white font-medium rounded-md">
+                <span>Message sent successfully.</span>
+            </div>
         </div>
-    ) : ""
+    )
 }
 
 export default Toast

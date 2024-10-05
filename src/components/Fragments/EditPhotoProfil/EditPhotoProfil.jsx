@@ -21,7 +21,6 @@ const EditPhotoProfil = ({state}) => {
     setOpen(false)
   }
 
-  // console.log(storeImage);
 
   const profileImageShow = storeImage.map(item => item.imgCrop)
 
@@ -51,7 +50,7 @@ const EditPhotoProfil = ({state}) => {
     <div className='m-5 w-fit flex justify-center cursor-pointer hover:scale-[101%]'>
       <div>
         <ImagePreview
-          className='w-64 h-64 rounded-full object-cover border border-black'
+          className='w-64 h-64 rounded-full object-cover '
           src={process.env.NEXT_PUBLIC_API + "/api/v1/user/picture/" + imgCrop}
           onClick={() => document.getElementById('my_modal_1').showModal()}
         />

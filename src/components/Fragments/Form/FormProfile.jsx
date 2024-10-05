@@ -1,17 +1,11 @@
 import InputForm from '@/components/Elements/Input'
-import { useStoreSportField } from '@/store/store'
 import { useFormik } from 'formik'
 import Button from '@/components/Elements/Button'
 import ChangePassword from '@/components/Layouts/Profile/ChangePassword'
 import { useStorePublic } from '@/store/storePublic'
-import { useUpdateUser } from '@/features/user'
-import { useEffect } from 'react'
 const FormProfile = ({ state }) => {
     const { isDisable, setDisable } = useStorePublic()
 
-    // useEffect(() => {}, [state])
-
-    
     const handleClickEdit = () => {
         if (isDisable) {
             setDisable(!isDisable)
@@ -29,13 +23,12 @@ const FormProfile = ({ state }) => {
             try {
                 // const {isSuccess} = await useUpdateUser(formik.values)
                 // if(isSuccess) setDisable(!isDisable)
+                setDisable(!isDisable)
             } catch (error) {
                 console.error(error);
             }
         }
     })
-    console.log(formik.values);
-    
 
     const handleFormInput = (event) => {
         formik.setFieldValue(event.target.name, event.target.value)
@@ -50,9 +43,9 @@ const FormProfile = ({ state }) => {
                 label="First Name"
                 type="text"
                 placeholder="First Name"
-                value={formik.values.firstname}
+                value={state?.fullname.split(" ")[0] || formik.values.firstname}
                 onChange={handleFormInput}
-                disabled={isDisable}
+                disabled={!isDisable}
             />
             <InputForm
                 title="Last Name"
@@ -60,9 +53,9 @@ const FormProfile = ({ state }) => {
                 label="Last Name"
                 type="text"
                 placeholder="Last Name"
-                value={formik.values.lastname}
+                value={state?.fullname.split(" ")[state.fullname.split(" ").length - 1] || formik.values.lastname}
                 onChange={handleFormInput}
-                disabled={isDisable}
+                disabled={!isDisable}
             />
             <InputForm
                 title="Phone"
@@ -70,9 +63,9 @@ const FormProfile = ({ state }) => {
                 label="Phone"
                 type="text"
                 placeholder="Phone"
-                value={formik.values.phone}
+                value={state?.phone || formik.values.phone}
                 onChange={handleFormInput}
-                disabled={isDisable}
+                disabled={!isDisable}
             />
             <InputForm
                 title="Email"
@@ -80,15 +73,13 @@ const FormProfile = ({ state }) => {
                 label="Email"
                 type="email"
                 placeholder="Email"
-                value={formik.values.email}
+                value={state?.email || formik.values.email}
                 onChange={handleFormInput}
-                disabled={isDisable}
+                disabled={!isDisable}
             />
             <div className='inline-flex gap-4 mt-3'>
-                <div className={isDisable ? "hidden" : "visible"}>
-                    <Button className={`${isDisable ? "hidden" : "visible"} btn btn-info`} onClick={() => formik.handleSubmit()}>Save</Button>
-                </div>
-                <Button className={`${!isDisable ? "hidden" : "visible"} btn btn-warning`} onClick={handleClickEdit}>Edit Profile</Button>
+                <Button className={`${isDisable ? "flex" : "hidden"} btn btn-info`} onClick={() => formik.handleSubmit()}>Save</Button>
+                <Button className={`${isDisable ? "hidden" : "visible"} btn btn-warning`} onClick={() => setDisable(!isDisable)}>Edit Profile</Button>
                 <ChangePassword />
             </div>
         </form>

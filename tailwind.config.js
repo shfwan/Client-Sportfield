@@ -16,7 +16,19 @@ module.exports = {
     },
   },
   plugins: [
-    daisyui
+    daisyui,
+    function ({ addComponents }) {
+      const newComponents = {
+        ".no-scrollbar::-webkit-scrollbar": {
+          display: "none"
+        },
+        ".no-scrollbar": {
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none"
+        }
+      };
+      addComponents(newComponents)
+    }
   ],
   daisyui: {
     themes: false, // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]

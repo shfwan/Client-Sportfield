@@ -12,4 +12,5 @@ export const usePostRegister = (body) => {
 export const usePostLogout = () => {
     signOut()
     sessionStorage.clear()
+    localStorage.clear()
 }
