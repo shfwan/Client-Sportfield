@@ -79,7 +79,7 @@ export default function Home() {
       <div className='container mx-auto px-4  space-y-16 max-w-7xl'>
         <h1 className='text-success font-semibold text-center text-2xl md:text-4xl font-poppins'>Keunggulan Booking di SportFields</h1>
         <div className="items-center flex justify-center  md:w-full h-full p-2">
-          <div className='gap-10 grid grid-cols-1   md:grid-cols-2 lg:grid-cols-3 '>
+          <div className='gap-8 grid grid-cols-1   md:grid-cols-2 lg:grid-cols-3 '>
             {
               keunggulan.map((item, index) => (
                 <div className="card bg-base-100 w-full md:w-96 h-60 shadow-md" key={index}>

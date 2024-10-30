@@ -5,7 +5,7 @@ const AdminLayout = ({ children }) => {
     const pathname = usePathname()
 
     return (
-        <section className='p-4 space-y-2 w-full h-screen md:overflow-scroll relative z-10 no-scrollbar'>
+        <section className='p-4 bg-white md:bg-transparent space-y-2 w-full h-screen md:overflow-scroll relative z-10 no-scrollbar'>
             {children}
         </section>
     )

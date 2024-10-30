@@ -16,7 +16,7 @@ export const useFetchSearchLapangan = (value) => {
 export const useFetchLapangan = (page, limit, value) => {
     return useQuery({
         queryKey: ["fetch.lapangan", page, value],
-        queryFn: async () => {            
+        queryFn: async () => {
             return await axios.get(`/api/v1/lapangan?page=${page}&limit=${limit}&value=${value}`)
         },
     })
@@ -29,7 +29,7 @@ export const usePostLapangan = ({ onSuccess }) => {
     return useMutation({
         mutationKey: ["post.lapangan"],
         mutationFn: async (body) => {            
-            return await axiosAuth.post("/api/v2/lapangan", body)
+            return await axiosAuth.post("/api/v2/lapangan", body, { headers: { "Content-Type": "multipart/form-data" } })
         },
         onSuccess
     })
@@ -37,7 +37,7 @@ export const usePostLapangan = ({ onSuccess }) => {
 
 export const useUpdateLapangan = ({ onSuccess }) => {
     const axiosAuth = useAxiosAuth()
-    
+
     return useMutation({
         mutationFn: async (body) => {
             return await axiosAuth.patch(`/api/v2/lapangan/${body.id}`, body.data)

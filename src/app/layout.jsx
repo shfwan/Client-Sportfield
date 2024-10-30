@@ -1,9 +1,7 @@
-"use client";
+"use client"
 import "@/styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MainNavBarLayout from "@/components/Layouts/NavigationBar/MainNavBarLayout"
-import MainLayout from "@/components/Layouts/MainLayout";
-import Toast from "@/components/Elements/Toast";
 import { SessionProvider } from "next-auth/react"
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,7 +13,6 @@ import 'react-toastify/dist/ReactToastify.css';
 // }
 
 import { Poppins } from "next/font/google";
-import { usePathname } from "next/navigation";
 import { Bounce, ToastContainer } from "react-toastify";
 
 const poppins = Poppins({ subsets: ["latin"], style: "normal", weight: "400" });
@@ -29,55 +26,20 @@ export default function RootLayout({ children }) {
     },
   });
 
-  const disableNavigation = ["/login", "/register"]
-  const pathname = usePathname()
-
-  const handleLayoutAuth = ({ children }) => {
-    const crumbPathname = pathname?.split("/").filter((path) => path !== "")
-
-    const disableBreadcrums = ["/", "/pemesanan", "/riwayat", "/profil"]
-    // const breadcrumbs = () => (
-    //   <div className="breadcrumbs text-sm mb-2 w-fit p-4">
-    //     <ul>
-    //       {
-    //         crumbPathname?.map((item, i) => (
-    //           <li key={i}>
-    //             <Link key={i} replace={true} href={`/`}>{item == "lapangan" ? item : item.split("_", item.length).flatMap((item) => item + " ")}</Link>
-    //           </li>
-    //         ))
-    //       }
-    //     </ul>
-    //   </div>
-    // )
-
-    if (pathname === "/login" || pathname === "/register") {
-      return { children }
-    } else {
-      return (
-        <>
-          <MainLayout>
-            {children}
-          </MainLayout>
-        </>
-      )
-    }
-  }
-
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <title>Sportfield</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1"  />
+      <body className={poppins.style}>
         {/* Next Auth */}
         <SessionProvider>
           {/* Tanstack Query */}
           <QueryClientProvider client={queryClient}>
             {/* Content */}
             <div className="bg-slate-50 flex flex-col scroll-smooth no-scrollbar">
-
               <MainNavBarLayout>
                 {children}
               </MainNavBarLayout>
-              {/* Toast */}
-              <Toast className="bg-error">Error:</Toast>
             </div>
           </QueryClientProvider>
         </SessionProvider>

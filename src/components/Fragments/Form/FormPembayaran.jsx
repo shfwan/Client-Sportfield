@@ -1,24 +1,36 @@
 import Button from "@/components/Elements/Button"
-import { useFormik } from "formik"
 import { useCheckOut } from "@/features/order"
 import { useOrderStore } from "@/store/orderStore"
 import { toast } from "react-toastify"
-import { socketInstance } from "@/lib/socket"
 import ListJamLapangan from "../List/Jam/ListJamLapangan"
 import ImagePreview from "@/components/Elements/Image"
 import { faker } from "@faker-js/faker"
-import { useEffect } from "react"
 import { ToRupiah } from "@/lib/toRupiah"
+import { useSession } from "next-auth/react"
+import { jwtDecode } from "jwt-decode"
+import { useQueryClient } from "@tanstack/react-query"
 
 const FormPembayaran = ({ item, onClick = () => { } }) => {
-    const [date, jam, clearJam] = useOrderStore((state) => [state.date, state.jam, state.clearJam])
+    const { data: session } = useSession()
+    const queryClient = useQueryClient()
 
+    const [date, jam, clearJam] = useOrderStore((state) => [state.date, state.jam, state.clearJam])
 
     const { mutate: OrderLapangan } = useCheckOut({
         onSuccess: () => {
             document.getElementById("modalPembayaran" + item?.id).close()
             toast.success("Berhasil ditambahkan pemesanan", { style: { backgroundColor: "#00a96e" } })
             clearJam()
+
+            if (session) {
+                const token = jwtDecode(session.user.token)
+                
+                if(token.role === "customer") {
+                    window.location.href = "/pemesanan"
+                } else if(token.role === "provider") {
+                    queryClient.invalidateQueries({ queryKey: ['fetch.order', 'fetch.statistik'] })
+                }
+            }
         },
         onError: () => {
             document.getElementById("modalPembayaran" + item?.id).close()
@@ -28,9 +40,16 @@ const FormPembayaran = ({ item, onClick = () => { } }) => {
         }
     })
 
+
     const handleSubmitForm = () => {
         event.preventDefault()
-        OrderLapangan({ id: item.id, lapanganId: item.lapanganId, data: { date: parseInt(date), jam } })
+        const tanggal = new Date()
+
+        if (session) {
+            const token = jwtDecode(session.user.token)
+
+            OrderLapangan({ id: item.id, lapanganId: item.lapanganId, data: { date: token.role === "customer" ? date : tanggal.getDate(), jam } })
+        }
     }
 
     return (
@@ -53,7 +72,7 @@ const FormPembayaran = ({ item, onClick = () => { } }) => {
             <h3 className="font-bold text-lg">Pilih Jam</h3>
             <ListJamLapangan lapangan={item} />
             <div className="inline-flex gap-4 justify-center w-full">
-                <Button className="btn-error " onClick={onClick}>Cancel</Button>
+                <Button className="text-white btn-error " onClick={onClick}>Cancel</Button>
                 <Button className={jam < 1 ? "btn-disabled" : "btn-success"} type="submit">Order Sekarang</Button>
             </div>
         </form>

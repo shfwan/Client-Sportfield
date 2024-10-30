@@ -21,7 +21,6 @@ const FormKonfirmasi = ({ data, onClick }) => {
 
     const { data: user } = useFetchByIdUser(data?.userId)
     const { data: orderDetail, isLoading } = useFetchOrders(data?.id)
-    console.log(orderDetail?.data.data);
 
 
     return (
@@ -58,8 +57,8 @@ const FormKonfirmasi = ({ data, onClick }) => {
                 <h1 className='font-semibold'>{ToRupiah(orderDetail?.data.data.total)}</h1>
             </div>
             <div className={` gap-2 flex flex-col md:flex-row justify-evenly`}>
-                <Button className="btn-error w-full md:btn-wide" onClick={onClick}>Batalkan</Button>
-                <Button className="btn-success w-full md:btn-wide" onClick={() => { }}>Konfirmasi</Button>
+                <Button className="text-white btn-error w-full md:btn-wide" onClick={onClick}>Batalkan</Button>
+                <Button className="text-white btn-success w-full md:btn-wide" onClick={() => { }}>Konfirmasi</Button>
             </div>
         </form>
     )

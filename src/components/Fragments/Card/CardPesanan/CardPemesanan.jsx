@@ -15,9 +15,10 @@ const CardPemesanan = ({ data }) => {
 
     const renderStatusBermain = () => {
         if (data != undefined) {
-
             if (data.playStatus === false && data.orderStatus === true && data.statusPembayaran === false) {
                 return { style: "badge-error", status: "Menunggu Pembayaran" }
+            } else if (data.playStatus === false && data.orderStatus === false && data.statusPembayaran === false) {
+                return { style: "badge-error", status: "Dibatalkan" }
             } else if (data.playStatus === false && data.orderStatus === true && data.statusPembayaran === true) {
                 return { style: "badge-error", status: "Belum Bermain" }
             } else if (data.playStatus === true && data.orderStatus === false && data.statusPembayaran === true) {
@@ -25,6 +26,8 @@ const CardPemesanan = ({ data }) => {
             } else if (data.playStatus === false && data.orderStatus === false && data.statusPembayaran === true) {
                 return { style: "badge-success", status: "Selesai" }
             }
+        } else {
+            return { style: "badge-success", status: "Selesai" }
         }
     }
 
@@ -44,10 +47,10 @@ const CardPemesanan = ({ data }) => {
 
     }
 
-    if (session) {
+    if (session && data) {
         const token = jwtDecode(session.user.token)
 
-        if (token.role === "customer") {
+        if (token.role === "customer" && renderStatusBermain() != undefined) {
             return (
                 <>
                     <div className='md:hidden flex flex-col gap-4 w-full border shadow p-4 rounded-md cursor-pointer' onClick={() => document.getElementById("modalPesanan" + token.role + data.id).showModal()}>
@@ -83,25 +86,29 @@ const CardPemesanan = ({ data }) => {
                         </span>
                     </div>
                     <ModalLayout id={"modalPesanan" + token.role + data.id} title="Detail Pesanan" onClick={() => document.getElementById("modalPesanan" + token.role + data.id).close()}>
-                        <DetailPemesanan orderId={data.id} data={dataOrder} />
+                        <DetailPemesanan orderId={data.id} data={dataOrder} token={token} />
                     </ModalLayout>
                 </>
             )
         } else if (token.role === "provider") {
             return (
                 <>
-                    <div className='grid grid-cols-6 gap-4  place-items-center grid-rows-1 w-full border shadow p-6 rounded-md cursor-pointer' onClick={() => document.getElementById("modalPesanan" + token.role + data.id).showModal()}>
+                    <div className='grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4  place-items-center grid-rows-1 w-full border hover:shadow transition-all p-4 md:p-6 rounded-md cursor-pointer bg-white' onClick={() => document.getElementById("modalPesanan" + token.role + data.id).showModal()}>
                         <div className='inline-flex gap-4 items-center justify-start w-full'>
-                            <figure className='aspect-square max-w-12'>
+                            <figure className='aspect-square max-w-16 md:max-w-12'>
                                 <ImagePreview className="rounded-full" src={process.env.NEXT_PUBLIC_API + "/api/v1/user/picture/" + user?.data.data.picture} />
                             </figure>
-                            <label el className='line-clamp-1 h-fit' htmlFor="">{user?.data.data.fullname}</label>
+                            <div className='flex flex-col'>
+                                <label el className='line-clamp-1 h-fit text-lg font-medium' htmlFor="">{user?.data.data.fullname}</label>
+                                <label className='w-full line-clamp-1 h-fit text-sm text-gray-600 md:hidden' htmlFor="">{lapanganTersedia?.data.data.type}/{lapanganTersedia?.data.data.statusLapangan}</label>
+                                <label className='w-full line-clamp-1 h-fit text-sm text-gray-600 md:hidden' htmlFor="">{data.detailOrder.jam[0].open}-{data.detailOrder.jam[data.detailOrder.jam.length - 1].close}</label>
+                            </div>
                         </div>
-                        <label className='w-full line-clamp-1 h-fit' htmlFor="">{lapanganTersedia?.data.data.name}</label>
-                        <label className='w-full line-clamp-1 h-fit' htmlFor="">{lapanganTersedia?.data.data.type}/{lapanganTersedia?.data.data.statusLapangan}</label>
-                        <label className='w-full line-clamp-1 h-fit' htmlFor="">{lapanganTersedia?.data.data.type}/{lapanganTersedia?.data.data.statusLapangan}</label>
-                        <label className='w-full line-clamp-1 h-fit' htmlFor="">{data.detailOrder.jam[0].open}-{data.detailOrder.jam[data.detailOrder.jam.length - 1].close}</label>
-                        <span className={`min-w-40 badge ${renderStatusBermain().style} font-semibold text-md text-white p-4`}>
+                        <label className='w-full line-clamp-1 h-fit hidden xl:flex' htmlFor="">{lapanganTersedia?.data.data.name}</label>
+                        <label className='w-full line-clamp-1 h-fit hidden lg:flex' htmlFor="">{lapanganTersedia?.data.data.type}/{lapanganTersedia?.data.data.statusLapangan}</label>
+                        <label className='w-full line-clamp-1 h-fit hidden md:flex' htmlFor="">{lapanganTersedia?.data.data.type}/{lapanganTersedia?.data.data.statusLapangan}</label>
+                        <label className='w-full line-clamp-1 h-fit hidden md:flex' htmlFor="">{data.detailOrder.jam[0].open}-{data.detailOrder.jam[data.detailOrder.jam.length - 1].close}</label>
+                        <span className={`min-w-40 hidden md:flex badge ${renderStatusBermain().style} font-semibold text-md text-white p-4`}>
                             <label htmlFor="">{renderStatusBermain().status}</label>
                         </span>
                     </div>

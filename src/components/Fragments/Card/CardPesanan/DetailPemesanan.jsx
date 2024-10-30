@@ -4,7 +4,7 @@ import QRCode from 'react-qr-code'
 import Button from '@/components/Elements/Button'
 import Swal from 'sweetalert2'
 import { toast } from 'react-toastify'
-import { useFetchOrders, usePatchOrder, usePembayaran } from '@/features/order'
+import { useFetchOrders, usePatchOrder, usePembayaran, userPatchOrderCancel } from '@/features/order'
 import CryptoJS from 'crypto-js'
 import { ToRupiah } from '@/lib/toRupiah'
 import { useSession } from 'next-auth/react'
@@ -12,10 +12,13 @@ import { jwtDecode } from 'jwt-decode'
 import ImagePreview from '@/components/Elements/Image'
 import { useFetchByIdUser } from '@/features/user'
 import { socketInstance } from '@/lib/socket'
+import { useQueryClient } from '@tanstack/react-query'
 
-const DetailPemesanan = ({ orderId, data }) => {
+const DetailPemesanan = ({ orderId, data, token }) => {    
+    
 
     const { data: session } = useSession()
+    const queryClient = useQueryClient()
 
     useEffect(() => {
 
@@ -37,6 +40,7 @@ const DetailPemesanan = ({ orderId, data }) => {
 
     const { data: orderDetail, isLoading } = useFetchOrders(orderId)
     const { data: user } = useFetchByIdUser(data.userId)
+    
 
     const { mutate: orderUpdate } = usePatchOrder({
         onSuccess: () => {
@@ -47,6 +51,7 @@ const DetailPemesanan = ({ orderId, data }) => {
 
     const { mutate: order } = usePembayaran({
         onSuccess: (result) => {
+            document.getElementById("modalPesanan" + token.role + data.id).close()
             window.snap.pay(result?.data.data.token, {
                 onSuccess: (result) => {
                     orderUpdate(data)
@@ -72,14 +77,39 @@ const DetailPemesanan = ({ orderId, data }) => {
         }
     })
 
+    const { mutate:cancelOrder } = userPatchOrderCancel({
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["fetch.order"] })
+            toast.success("Pesanan Berhasil di batalkan", { style: { backgroundColor: "#00a96e" } })
+            document.getElementById("modalPesanan" + token.role + data.id).close()
+        },
+        onError: () => {
+            document.getElementById("modalPesanan" + token.role + data.id).close()
+            Swal.fire({
+                title: 'Gagal untuk dibatalkan',
+                // text: result.response.data.message,
+                icon: 'error',
+                showCancelButton: false,
+                showConfirmButton: true,
+                confirmButtonColor: '#3085d6',
+            })
+        }
+    })
+
     const renderStatusBermain = () => {
-        if (data.playStatus === false && data.orderStatus === true && data.statusPembayaran === false) {
-            return { style: "badge-error", status: "Menunggu Pembayaran" }
-        } else if (data.playStatus === false && data.orderStatus === true && data.statusPembayaran === true) {
-            return { style: "badge-error", status: "Belum Bermain" }
-        } else if (data.playStatus === true && data.orderStatus === false && data.statusPembayaran === true) {
-            return { style: "badge-warning", status: "Sedang Bermain" }
-        } else if (data.playStatus === false && data.orderStatus === false && data.statusPembayaran === true) {
+        if (data !== undefined) {
+            if (data.playStatus === false && data.orderStatus === true && data.statusPembayaran === false) {
+                return { style: "badge-error", status: "Menunggu Pembayaran" }
+            } else if (data.playStatus === false && data.orderStatus === false && data.statusPembayaran === false) {
+                return { style: "badge-error", status: "Dibatalkan" }
+            } else if (data.playStatus === false && data.orderStatus === true && data.statusPembayaran === true) {
+                return { style: "badge-error", status: "Belum Bermain" }
+            } else if (data.playStatus === true && data.orderStatus === false && data.statusPembayaran === true) {
+                return { style: "badge-warning", status: "Sedang Bermain" }
+            } else if (data.playStatus === false && data.orderStatus === false && data.statusPembayaran === true) {
+                return { style: "badge-success", status: "Selesai" }
+            }
+        } else {
             return { style: "badge-success", status: "Selesai" }
         }
     }
@@ -87,7 +117,7 @@ const DetailPemesanan = ({ orderId, data }) => {
     if (session) {
         const token = jwtDecode(session.user.token)
 
-        if (token.role === "customer") {
+        if (token.role === "customer" && renderStatusBermain() !== undefined) {
             return (
                 <div className='flex flex-col md:flex-row items-center justify-center gap-6'>
                     <div className='block space-y-6 max-w-xl'>
@@ -123,9 +153,17 @@ const DetailPemesanan = ({ orderId, data }) => {
                             <h1 className='font-semibold'>{ToRupiah(orderDetail?.data.data.total)}</h1>
                         </div>
 
-                        <div className={`${data.statusPembayaran ? "hidden" : "flex"} gap-2 flex-col md:flex-row justify-evenly`}>
-                            <Button className="btn-error w-full md:btn-wide">Batalkan</Button>
-                            <Button className="btn-success w-full md:btn-wide" onClick={() => order(data)}>Bayar</Button>
+                        <div className={`${data.statusPembayaran || renderStatusBermain().status === "Dibatalkan" ? "hidden" : "flex"} gap-2 flex-col md:flex-row justify-evenly`}>
+                            <Button
+                                className="btn-error w-full md:btn-wide text-white"
+                                onClick={() => cancelOrder({id: data.id, lapanganId: data.lapanganId})}>
+                                Batalkan
+                            </Button>
+                            <Button
+                                className="btn-success w-full md:btn-wide text-white"
+                                onClick={() => { order(data); document.getElementById("modalPesanan" + token.role + data.id).close() }}>
+                                Bayar
+                            </Button>
                         </div>
                     </div>
                     <div className={`${data.statusPembayaran ? "flex" : "hidden"} flex-col items-center justify-center gap-4`}>
@@ -139,7 +177,7 @@ const DetailPemesanan = ({ orderId, data }) => {
                     </div>
                 </div>
             )
-        } else if (token.role === "provider") {
+        } else if (token.role === "provider" && renderStatusBermain() !== undefined) {
             return (
                 <div className='flex flex-col md:flex-row items-center justify-center gap-6'>
                     <div className='block space-y-6 max-w-xl'>
@@ -181,7 +219,6 @@ const DetailPemesanan = ({ orderId, data }) => {
                             <h1 className='font-semibold'>Total</h1>
                             <h1 className='font-semibold'>{ToRupiah(orderDetail?.data.data.total)}</h1>
                         </div>
-
                     </div>
                 </div>
             )

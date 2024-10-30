@@ -16,19 +16,19 @@ const Caraousel = ({ className = "", maxWidth, children, autoSlide = true, autoS
 
     return (
         <>
-        <div className={`margin-auto ${className}`}>
+            <div className={`margin-auto ${className}`}>
                 <div className="overflow-x-hidden relative aspect-auto rounded-xl">
                     {/* Image */}
-                    <figure className="flex transition-transform ease-out duration-500 snap-mandatory scroll-smooth max-w-full max-h-[40rem]" style={{ transform: `translateX(-${curr * 100}%)` }}>
+                    <figure className="flex transition-transform ease-out duration-500 snap-mandatory scroll-smooth aspect-auto max-w-4xl max-h-[30rem]" style={{ transform: `translateX(-${curr * 100}%)` }}>
                         {children}
                     </figure>
 
                     {/* Button next & prev */}
                     <div className={`absolute inset-0 flex justify-between p-4 items-center ${nextPrev ? "visible" : "hidden"}`}>
-                        <button className="bg-opacity-50 bg-white h-fit rounded-full" onClick={prev}>
+                        <button className="text-white bg-opacity-50 bg-white h-fit rounded-full" onClick={prev}>
                             <ChevronLeft size={36} color='white' />
                         </button>
-                        <button className="bg-opacity-50 bg-white h-fit rounded-full" onClick={next}>
+                        <button className="text-white bg-opacity-50 bg-white h-fit rounded-full" onClick={next}>
                             <ChevronRight size={36} color='white' />
                         </button>
                     </div>

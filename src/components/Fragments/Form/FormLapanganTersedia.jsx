@@ -10,10 +10,10 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 
-const FormLapanganTersedia = ({ id,jam, data, type = "create", onClick }) => {
+const FormLapanganTersedia = ({ id, jam, data, type = "create", onClick }) => {
     const queryClient = useQueryClient()
     const [isJamOption, setIsJamOption] = useState(false)
-    
+
 
     const { mutate: createLapanganTersedia } = usePostLapanganTersedia({
         onSuccess: () => {
@@ -38,12 +38,13 @@ const FormLapanganTersedia = ({ id,jam, data, type = "create", onClick }) => {
             document.getElementById("lapanganTersediaUpdate" + data?.id).close()
             toast.error("Lapangan Gagal di Ubah", { style: { backgroundColor: "#ff5861" } })
         }
-    })    
+    })
 
     const formik = useFormik({
-        
+
         initialValues: {
             name: data?.name || "",
+            picture: data?.picture || "",
             description: data?.description || "",
             statusLapangan: data?.statusLapangan || "Pilih",
             type: data?.type || "Pilih",
@@ -51,22 +52,23 @@ const FormLapanganTersedia = ({ id,jam, data, type = "create", onClick }) => {
             open: "",
             close: ""
         },
-        onSubmit: async () => {
+        onSubmit: async (value) => {
             event.preventDefault()
 
             formik.values.open = !isJamOption ? jam.open : formik.values.open
             formik.values.close = !isJamOption ? jam.close : formik.values.close
-            
-            if (type === "create") {                
+
+            if (type === "create") {
                 createLapanganTersedia({
                     id: id,
-                    name: formik.values.name,
-                    description: formik.values.description,
-                    statusLapangan: formik.values.statusLapangan,
-                    type: formik.values.type,
-                    price: parseInt(formik.values.price),
-                    open: formik.values.open,
-                    close: formik.values.close
+                    name: value.name,
+                    picture: value.picture,
+                    description: value.description,
+                    statusLapangan: value.statusLapangan,
+                    type: value.type,
+                    price: parseInt(value.price),
+                    open: value.open,
+                    close: value.close
                 })
 
                 formik.values.name = ""
@@ -74,12 +76,12 @@ const FormLapanganTersedia = ({ id,jam, data, type = "create", onClick }) => {
                 formik.values.statusLapangan = ""
                 formik.values.type = ""
                 formik.values.price = ""
-                
+
             } else if (type === "update") {
                 updateLapanganTersedia({
                     id: data?.id,
                     lapanganId: data?.lapanganId,
-                    data: formik.values
+                    data: value
                 })
             }
 
@@ -107,23 +109,31 @@ const FormLapanganTersedia = ({ id,jam, data, type = "create", onClick }) => {
         }
     }
 
+    const handleFormikFile = (event) => {
+        const formdata = new FormData()
+
+        formdata.append("file", event.target.files[0])
+        formik.setFieldValue(event.target.name, formdata.get("file"))
+    }
+
 
     return (
         <form id={type} onSubmit={formik.handleSubmit} method='dialog'>
             <div className="flex flex-col gap-4">
                 <InputForm value={formik.values.name} onChange={handleFormikInput} type="text" title="Name" name="name" isInvalid={formik.errors.name} />
+                <input type="file" name="picture" id="" onChange={handleFormikFile} className='file-input w-full max-w-xs' />
                 <Textarea value={formik.values.description} name="description" title="Deskripsi" className="" placeholder="Deskripsi lapangan" onChange={handleFormikInput} />
                 <div className="flex gap-4">
                     <SelectInput id={type} defaultValue={formik.values.statusLapangan} name="statusLapangan" title="Status Lapangan" onChange={handleFormikInput}>
                         <option>Indoor</option>
                         <option>Outdoor</option>
                     </SelectInput>
-                    <SelectInput  defaultValue={formik.values.type} name="type" title="Type" onChange={handleFormikInput}>
+                    <SelectInput defaultValue={formik.values.type} name="type" title="Type" onChange={handleFormikInput}>
                         <option>Badminton</option>
                         <option>Futsal</option>
                     </SelectInput>
                 </div>
-                <SelectInput  name="jam" title="Jam" onChange={handleJamOption}>
+                <SelectInput name="jam" title="Jam" onChange={handleJamOption}>
                     <option>Gunakan jam yang sudah ada</option>
                     <option>Buat jam untuk lapangan ini</option>
                 </SelectInput>
@@ -139,8 +149,8 @@ const FormLapanganTersedia = ({ id,jam, data, type = "create", onClick }) => {
                 <InputForm value={formik.values.price} onChange={handleFormikInput} type="number" title="Price" name="price" isInvalid={formik.errors.price} />
             </div>
             <div className="flex gap-4 mt-5">
-                <Button className="btn-wide hidden lg:flex btn-error" onClick={onClick}>Cancel</Button>
-                <Button className={`lg:btn-wide w-full ${type === "create" ? "btn-info" : "btn-warning"}`} type='submit'>{type === "create" ? "Tambah" : "Ubah"}</Button>
+                <Button className="text-white btn-wide hidden lg:flex btn-error" onClick={onClick}>Cancel</Button>
+                <Button className={`lg:btn-wide text-white w-full ${type === "create" ? "btn-info" : "btn-warning"}`} type='submit'>{type === "create" ? "Tambah" : "Ubah"}</Button>
             </div>
         </form>
     )

@@ -5,7 +5,13 @@ const CheckboxContext = createContext()
 export const CheckboxButton = ({ children, onInput, value, isChecked, disabled, onChange = () => { } }) => {
 
     return (
-        <label className={`btn ${disabled ? "btn-disabled" : ""} cursor-pointer btn-md btn-outline hover:bg-success hover:border-success ${isChecked ? "bg-success text-white" : "text-success"}`} >
+        <label
+            className={`btn ${disabled ? "btn-disabled" : ""}
+                rounded-md min-w-44 h-full cursor-pointer
+                btn-md btn-outline border-gray-400
+                hover:bg-transparent hover:border-gray-400 hover:text-current hover:shadow-md
+                ${isChecked ? "bg-success/10 text-success border-success" : ""}
+                `} >
             <input
                 className="hidden"
                 type="checkbox"

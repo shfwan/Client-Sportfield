@@ -1,6 +1,7 @@
 "use client"
 
 const loading = () => {
+
     return (
         <div className='bg-[#f8fafc] flex justify-center items-center w-screen h-screen top-0 z-50'>
             <div className='flex flex-col justify-center items-center gap-4'>

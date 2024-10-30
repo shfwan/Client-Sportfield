@@ -27,11 +27,11 @@ const ImagePreviewCaraouselLayout = () => {
 
     return (
         <div className="relative">
-            <Caraousel className='max-2xl:' autoSlideInterval={3000} maxWidth={"200rem"} >
+            <Caraousel className='max-w-7xl min-h-full:' autoSlideInterval={3000}>
                 {
                     slides.map((item, i) => (
                         <ImagePreview
-                            className="flex-[1_0_100%] object-cover snap-start"
+                            className="flex-[1_0_100%] snap-start"
                             key={i}
                             src={item}
                             alt="Shoes" />
@@ -47,36 +47,18 @@ const ImagePreviewCaraouselLayout = () => {
             {/* Modal preview image */}
             <ModalLayout id="modalCarauoselImagePreview" title="Gallery" className="bg-white/50 flex flex-col gap-4" onClick={handleModal}>
                 <div className=''>
-                    {
-                        isPreview ? (
-                            <div className="min-w-[60rem] min-h-full">
-                                
-                                <CaraouselModalPreview className='max-w-[60rem]'>
-                                    
-                                    {
-                                        slides.map((item, i) => (
-                                            <ImagePreview
-                                                className="rounded-md"
-                                                key={i}
-                                                src={item.toString()}
-                                                alt="Image" />
-                                        ))
-                                    }
-                                </CaraouselModalPreview>
-                            </div>
-                        ) : (
+                    <CaraouselModalPreview className='max-w-[60rem]' data={slides}>
 
-                            <GalleryMasonryLayout>
-                                {
-                                    slides.map((item, index) => (
-                                        <figure className='bg-gray-200 break-inside-avoid ' key={index} onClick={() => setIsPreview(!isPreview)}>
-                                            <img className='rounded-md flex-[1_0_100%]' src={item.toString()} alt="Image" loading='lazy' />
-                                        </figure>
-                                    ))
-                                }
-                            </GalleryMasonryLayout>
-                        )
-                    }
+                        {
+                            slides.map((item, i) => (
+                                <ImagePreview
+                                    className="rounded-md"
+                                    key={i}
+                                    src={item.toString()}
+                                    alt="Image" />
+                            ))
+                        }
+                    </CaraouselModalPreview>
                 </div>
             </ModalLayout>
         </div>

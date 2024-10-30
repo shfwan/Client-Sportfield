@@ -71,7 +71,7 @@ const CardLapanganTersedia = ({ lapanganTersedia }) => {
                     <p>{lapanganTersedia.description}</p>
                 </CardLapangan.Body>
                 <CardLapangan.Footer className="justify-end">
-                    <Button className="btn-success" onClick={handleCheckout}>Order Sekarang</Button>
+                    <Button className="text-white btn-success" onClick={handleCheckout}>Order Sekarang</Button>
                 </CardLapangan.Footer>
             </CardLapangan>
             <ModalLayout id={"modalPembayaran" + lapanganTersedia.id} title="Order" btnX={false}>

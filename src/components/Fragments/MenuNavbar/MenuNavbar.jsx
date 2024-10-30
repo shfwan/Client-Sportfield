@@ -14,7 +14,7 @@ const MenuNavbar = () => {
                 <ButtonActive className="btn-outline" onClick={() => setMenu(!isMenu)} to="/lapangan?page=1" >Lapangan</ButtonActive>
                 <ButtonActive className="btn-outline" onClick={() => setMenu(!isMenu)} to="/pemesanan" >Pemesanan</ButtonActive>
                 {
-                    status === "authenticated" ? <Button className="btn-error" onClick={() => usePostLogout}>Keluar</Button> : <Button className='btn-warning' onClick={() => signIn()}>Login</Button>
+                    status === "authenticated" ? <Button className="text-white btn-error" onClick={() => usePostLogout}>Keluar</Button> : <Button className='btn-warning' onClick={() => signIn()}>Login</Button>
                 }  
             </div>
         </div>

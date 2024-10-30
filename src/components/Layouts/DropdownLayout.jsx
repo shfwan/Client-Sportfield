@@ -14,8 +14,8 @@ const DropdownLayout = ({ className, title, icon, children }) => {
         )
     }
     return (
-        <div className={`flex flex-col gap-4 w-fit h-full`}>
-            <Button className=" btn-info w-fit" onClick={() => setDropdown(!isDropdown)}>{icon}{title}</Button>
+        <div className={`flex flex-col gap-4 w-fith-full`}>
+            <Button className="text-white  btn-info p-4 h-full" onClick={() => setDropdown(!isDropdown)}>{icon}{title}</Button>
             {isDropdown && renderContentDropdown()}
         </div>
     )

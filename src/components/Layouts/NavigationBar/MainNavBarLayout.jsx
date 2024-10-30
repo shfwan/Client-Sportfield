@@ -5,7 +5,6 @@ import TopNavbarLayout from './TopNavbarLayout'
 import SideNavbarLayout from './SideNavbarLayout'
 import { useSession } from 'next-auth/react'
 import { redirect, usePathname } from 'next/navigation'
-import Footer from '../Footer'
 
 const NavBar = ({ children }) => {
     const { data: session, status } = useSession()
@@ -24,8 +23,7 @@ const NavBar = ({ children }) => {
 
                 return (
                     <div className='bg-[#f8fafc] text-black flex flex-col lg:flex-row w-full'>
-                        <SideNavbarLayout >
-                        </SideNavbarLayout>
+                        <SideNavbarLayout />
                         {children}
                     </div>
                 )
@@ -39,7 +37,7 @@ const NavBar = ({ children }) => {
                 )
             }
         } else {
-            if (status === "loading") {
+            if (status === "loading") {                
                 return (
                     <div className='bg-[#f8fafc] flex justify-center items-center w-screen h-screen sticky top-0 z-50'>
                         <div className='flex flex-col justify-center items-center gap-4'>

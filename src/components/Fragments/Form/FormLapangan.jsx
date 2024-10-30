@@ -7,7 +7,7 @@ import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-const FormLapangan = ({ data, onClick, type = "create" }) => {    
+const FormLapangan = ({ data, onClick, type = "create" }) => {
     const router = useRouter()
     const queryClient = useQueryClient()
 
@@ -22,7 +22,7 @@ const FormLapangan = ({ data, onClick, type = "create" }) => {
     })
 
     const { mutate: updateLapangan } = useUpdateLapangan({
-        
+
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['fetch.detailLapangan', data.id] })
             document.getElementById("lapanganUpdate").close()
@@ -35,31 +35,30 @@ const FormLapangan = ({ data, onClick, type = "create" }) => {
             name: data?.name || "",
             picture: data?.picture || "",
             description: data?.description || "",
-            alamat: data?.address.alamat || "",
-            mapUrl: data?.address.mapUrl || "",
+            alamat: data?.alamat || "",
+            mapUrl: data?.mapUrl || "",
             open: data?.open || "",
             close: data?.close || ""
         },
 
-        onSubmit: async () => {
+        onSubmit: async (value) => {
             event.preventDefault()
 
             if (type === "create") {
+
                 createLapangan({
-                    name: formik.values.name,
-                    picture: formik.values.picturex,
-                    description: formik.values.description,
-                    address: {
-                        alamat: formik.values.alamat,
-                        mapUrl: formik.values.mapUrl
-                    },
-                    open: formik.values.open,
-                    close: formik.values.close,
+                    name: value.name,
+                    picture: value.picture,
+                    description: value.description,
+                    alamat: value.alamat,
+                    mapUrl: value.mapUrl,
+                    open: value.open,
+                    close: value.close,
                 })
             } else if (type === "update") {
                 updateLapangan({
                     id: data.id,
-                    data: formik.values
+                    data: value
                 })
             }
         }
@@ -69,11 +68,18 @@ const FormLapangan = ({ data, onClick, type = "create" }) => {
         formik.setFieldValue(event.target.name, event.target.value)
     }
 
+    const handleFormikFile = (event) => {
+        const formdata = new FormData()
+
+        formdata.append("file", event.target.files[0])
+        formik.setFieldValue(event.target.name, formdata.get("file"))
+    }
+
     return (
         <form className='w-fit' onSubmit={formik.handleSubmit} action="#">
             <div className="flex flex-col gap-4">
                 <InputForm onChange={handleFormikInput} type="text" value={formik.values.name} title="Name" name="name" />
-                {/* <input type="file" name="picture" id="" /> */}
+                <input type="file" name="picture" id="" onChange={handleFormikFile} className='file-input w-full max-w-xs' />
                 <Textarea name="description" title="Deskripsi" className="" placeholder="Deskripsi lapangan" onChange={handleFormikInput} />
                 <InputForm onChange={handleFormikInput} type="text" value={formik.values.alamat} title="Alamat" name="alamat" />
                 <InputForm onChange={handleFormikInput} type="text" value={formik.values.mapUrl} title="URL map" name="mapUrl" />
@@ -83,8 +89,8 @@ const FormLapangan = ({ data, onClick, type = "create" }) => {
                 </div>
             </div>
             <div className="flex flex-col-reverse lg:flex-row gap-4 mt-5">
-                <Button className="btn-error hidden lg:flex btn-wide" type="button" onClick={onClick}>Cancel</Button>
-                <Button className={`lg:btn-wide ${type === "update" ? "btn-warning" : "btn-success"}`} type="submit">{type === "update" ? "Ubah" : "Tambah"}</Button>
+                <Button className="text-white btn-error hidden lg:flex btn-wide" type="button" onClick={onClick}>Cancel</Button>
+                <Button className={`lg:btn-wide text-white ${type === "update" ? "btn-warning" : "btn-success"}`} type="submit">{type === "update" ? "Ubah" : "Tambah"}</Button>
             </div>
         </form>
     )

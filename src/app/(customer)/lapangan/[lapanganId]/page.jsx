@@ -17,7 +17,7 @@ const DetailPage = () => {
             <div>
                 <label htmlFor="">{detailLapangan?.data.data.address?.alamat}</label>
                 <a href={detailLapangan?.data.data.address?.mapUrl} target="_blank">
-                    <Button className=" btn-info w-fit flex gap-4">
+                    <Button className="text-white  btn-info w-fit flex gap-4">
                         <label htmlFor="">Lihat lokasi</label>
                         <Map color="#ffffff" />
                     </Button>
@@ -49,9 +49,10 @@ const DetailPage = () => {
                 {/* Lapangan tersedia */}
                 {renderOpenMap()}
 
-            <div className="block space-y-4">
-                    <h1 className="text-black text-xl font-semibold">Pilih Lapangan yang tersedia</h1>
-                    <div className="overflow-x-scroll rounded-md p-4 border no-scrollbar">
+
+                <div className="block space-y-4 w-full">
+                    <h1 className="text-black text-2xl font-semibold">Pilih Lapangan yang tersedia</h1>
+                    <div className="overflow-x-scroll rounded-md w-full p-4 border no-scrollbar md:overflow-hidden ">
                         <ListTanggal />
                     </div>
                 </div>

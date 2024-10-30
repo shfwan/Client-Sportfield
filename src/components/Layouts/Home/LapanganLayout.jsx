@@ -39,11 +39,10 @@ const LapanganLayout = () => {
                     >
                         <CardLapangan className="cursor-pointer">
                             <CardLapangan.Header>
-                                <figure className='max-w-96'>
+                                <figure className='max-w-96 min-h-96'>
                                     <ImagePreview
-                                        className="rounded-t-xl"
-
-                                        src={faker.image.url()}
+                                        className=""
+                                        src={process.env.NEXT_PUBLIC_API + "/api/v1/lapangan/picture/" + item.picture}
                                         alt="Shoes"
                                         loading="lazy"
                                     />
@@ -73,7 +72,7 @@ const LapanganLayout = () => {
     }
 
     return (
-        <div className='flex w-full h-fit flex-col items-center justify-between text-black gap-y-10 min-h-screen'>
+        <div className='flex w-full h-fit flex-col items-center justify-between text-black gap-y-10'>
             <div className="grid grid-cols-1 gap-4 auto-rows-max sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2">
                 {isLoading ? renderSkeletonLapangan() : lapangan?.data.data.lapangan.length > 0 ? renderLapangan() : (<EmptyData title="Lapangan tidak ada" />)}
             </div>

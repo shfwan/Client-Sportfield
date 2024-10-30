@@ -50,12 +50,13 @@ const ListLapanganTersediaProvider = ({ id, jam }) => {
             }
         })
     }
+
     return (
         <div className='flex flex-col gap-y-8'>
             <label className="text-2xl font-semibold">Lapangan Tersedia</label>
             <div className="inline-flex gap-4">
-                <Button className="btn-info" onClick={() => document.getElementById("lapanganTersediaCreate").showModal()}>Tambah</Button>
-                <Button className="btn-error" onClick={handleDeleteAllLapangan}>Hapus Semua</Button>
+                <Button className="text-white btn-info" onClick={() => document.getElementById("lapanganTersediaCreate").showModal()}>Tambah</Button>
+                <Button className="text-white btn-error" onClick={handleDeleteAllLapangan}>Hapus Semua</Button>
             </div>
 
             <ModalLayout id="lapanganTersediaCreate" title="Tambah Lapangan Tersedia" onClick={() => document.getElementById("lapanganTersediaCreate").close()}>
@@ -72,7 +73,7 @@ const ListLapanganTersediaProvider = ({ id, jam }) => {
                                         <figure className='max-w-96'>
                                             <ImagePreview
                                                 className="rounded-t-xl"
-                                                src={faker.image.url()}
+                                                src={process.env.NEXT_PUBLIC_API + "/api/v1/lapangan/picture/" + item.picture}
                                                 alt="Shoes"
                                                 loading="lazy"
                                             />
@@ -86,8 +87,8 @@ const ListLapanganTersediaProvider = ({ id, jam }) => {
                                         <label className='font-bold' htmlFor="price">{ToRupiah(item.price)} / <strong>Jam</strong></label>
                                     </CardLapangan.Body>
                                     <CardLapangan.Footer className="justify-end">
-                                        <Button className="btn-warning" onClick={() => document.getElementById("lapanganTersediaUpdate" + item.id).showModal()}><HiOutlinePencilAlt size={24} /></Button>
-                                        <Button className="btn-error" onClick={() => deleteLapanganTersedia({ id: item.id, lapanganId: item.lapanganId })}><HiOutlineTrash size={24} /></Button>
+                                        <Button className="text-white btn-warning" onClick={() => document.getElementById("lapanganTersediaUpdate" + item.id).showModal()}><HiOutlinePencilAlt size={24} /></Button>
+                                        <Button className="text-white btn-error" onClick={() => deleteLapanganTersedia({ id: item.id, lapanganId: item.lapanganId })}><HiOutlineTrash size={24} /></Button>
                                     </CardLapangan.Footer>
                                 </CardLapangan>
                                 <ModalLayout id={"lapanganTersediaUpdate" + item.id} title="Edit Lapangan Tersedia" btnX={false}>

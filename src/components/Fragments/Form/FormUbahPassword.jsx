@@ -44,8 +44,8 @@ const FormUbahPassword = () => {
 
             />
             <div className='flex justify-end mr-3 mt-3 gap-x-3'>
-                <Button className="btn btn-error" onClick={() => document.getElementById("changePassword").close()}>Batal</Button>
-                <Button className="btn btn-info">Simpan</Button>
+                <Button className="text-white btn btn-error" onClick={() => document.getElementById("changePassword").close()}>Batal</Button>
+                <Button className="text-white btn btn-info">Simpan</Button>
             </div>
         </form>
     )

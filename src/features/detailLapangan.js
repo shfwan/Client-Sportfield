@@ -38,8 +38,12 @@ export const usePostLapanganTersedia = ({ onSuccess, onError }) => {
 
     return useMutation({
         mutationKey: ["post.lapanganTersedia"],
-        mutationFn: async (body) => {
-            return await axiosAuth.post(`/api/v2/lapangan/${body.id}`, body)
+        mutationFn: async (body) => {            
+            return await axiosAuth.post(`/api/v2/lapangan/${body.id}`, body, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
         },
         onSuccess,
         onError
@@ -52,7 +56,11 @@ export const useUpdateLapanganTersedia = ({ onSuccess, onError }) => {
     return useMutation({
         mutationKey: ["update.lapangan"],
         mutationFn: async (body) => {
-            return await axiosAuth.patch(`/api/v2/lapangan/${body.lapanganId}/information/${body.id}`, body.data)
+            return await axiosAuth.patch(`/api/v2/lapangan/${body.lapanganId}/information/${body.id}`, body.data, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
         },
         onSuccess,
         onError

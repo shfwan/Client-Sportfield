@@ -38,7 +38,7 @@ const TopNavbarLayout = () => {
         } else {
             return (
                 <div className='inline-flex gap-4'>
-                    <Button className='hidden md:flex btn-warning min-w-32' onClick={() => signIn()}>Login</Button>
+                    <Button className='hidden md:flex btn-warning min-w-32 text-white' onClick={() => signIn()}>Login</Button>
                     <Link href="/register" className='hidden md:flex btn text-white btn-outline hover:bg-warning hover:border-warning min-w-32'>Daftar</Link>
                 </div>
             )
