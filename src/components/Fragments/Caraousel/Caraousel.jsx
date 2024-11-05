@@ -17,11 +17,11 @@ const Caraousel = ({ className = "", maxWidth, children, autoSlide = true, autoS
     return (
         <>
             <div className={`margin-auto ${className}`}>
-                <div className="overflow-x-hidden relative aspect-auto rounded-xl">
+                <div className="overflow-x-hidden relative rounded-xl">
                     {/* Image */}
-                    <figure className="flex transition-transform ease-out duration-500 snap-mandatory scroll-smooth aspect-auto max-w-4xl max-h-[30rem]" style={{ transform: `translateX(-${curr * 100}%)` }}>
+                    <div className="flex transition-transform ease-out duration-500 scroll-smooth w-full bg-gray-500" style={{ transform: `translateX(-${curr * 100}%)` }}>
                         {children}
-                    </figure>
+                    </div>
 
                     {/* Button next & prev */}
                     <div className={`absolute inset-0 flex justify-between p-4 items-center ${nextPrev ? "visible" : "hidden"}`}>
@@ -36,7 +36,7 @@ const Caraousel = ({ className = "", maxWidth, children, autoSlide = true, autoS
                     {/* Indicator */}
                     <div className={`absolute bottom-4 right-0 left-0 text-black ${indicator ? "visible" : "hidden"}`}>
                         <div className='flex w-full items-center justify-center gap-2'>
-                            {
+                            {/* {
                                 children.map((_, i) => (
                                     <span
                                         className={`cursor-pointer w-2 h-2 transition-all rounded-full bg-white ${curr === i ? "p-1" : "bg-opacity-50"}`}
@@ -44,7 +44,7 @@ const Caraousel = ({ className = "", maxWidth, children, autoSlide = true, autoS
                                         onClick={() => setCurr(i)}
                                     ></span>
                                 ))
-                            }
+                            } */}
                         </div>
                     </div>
 

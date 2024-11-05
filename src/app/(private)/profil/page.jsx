@@ -15,7 +15,10 @@ const ProfilPage = () => {
                         {isLoading ? <div className='skeleton w-64 p-4 rounded-md'></div> : <h1 className="font-poppins font-semibold text-xl">{profil?.data?.data.fullname}</h1>}
                     </div>
                     <div className="w-96 items-start flex flex-col gap-4">
-                        <FormProfile state={profil?.data?.data} />
+                        {
+                            !isLoading ? <FormProfile state={profil?.data?.data} /> : <>loading bang</>
+                        }
+                        
                     </div>
                 </div>
             </div>

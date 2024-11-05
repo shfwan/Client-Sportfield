@@ -53,7 +53,7 @@ const CardPemesanan = ({ data }) => {
         if (token.role === "customer" && renderStatusBermain() != undefined) {
             return (
                 <>
-                    <div className='md:hidden flex flex-col gap-4 w-full border shadow p-4 rounded-md cursor-pointer' onClick={() => document.getElementById("modalPesanan" + token.role + data.id).showModal()}>
+                    <div className='md:hidden flex flex-col gap-4 w-full shadow p-4 rounded-md cursor-pointer' onClick={() => document.getElementById("modalPesanan" + token.role + data.id).showModal()}>
                         <div className="inline-flex items-center justify-center w-full border-b pb-2">
                             <label className='whitespace-nowrap font-semibold' htmlFor="">{lapangan?.data.data.name}</label>
                             <span className={`ml-auto min-w-20 badge ${renderStatusBermain().style} font-semibold text-white p-3`}>

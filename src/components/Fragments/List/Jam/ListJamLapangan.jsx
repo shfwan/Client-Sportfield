@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query'
 const ListJamLapangan = ({ lapangan }) => {
     const [date] = useOrderStore((state) => [state.date])
 
-    const { data: jam, refetch: refetchJam, isLoading } = useListJam(lapangan, date)
+    const { data: jam, refetch: refetchJam, isLoading } = useListJam(lapangan, date)    
 
     useEffect(() => {
         refetchJam()

@@ -71,7 +71,8 @@ const Dashboard = () => {
                             <hr />
                             {
                                 listNotification?.data.data.notifications.length > 0 ? (
-                                    listNotification?.data.data.notifications.map((_, i) => {
+                                    listNotification?.data.data.notifications.map((item, i) => {
+                                        
                                         if (i === 4) {
                                             return (<Link href="/notification" className="btn text-white w-full btn-info">Tampilkan Lebih</Link>)
                                         } else {
@@ -79,11 +80,11 @@ const Dashboard = () => {
                                                 <div className='border shadow p-4 block space-y-2 text-slate-500'>
                                                     <span className='inline-flex gap-4'>
                                                         <IoInformationCircle color='#00b5ff' size={24} />
-                                                        <label className='text-info' htmlFor="">Pesanan Baru</label>
+                                                        <label className='text-info' htmlFor="">{item.title}</label>
                                                     </span>
                                                     <div className="flex flex-col">
-                                                        <label htmlFor="">Orang</label>
-                                                        <label htmlFor="">Lapangan badminton 1</label>
+                                                        <label htmlFor="">{item.user.firstname}</label>
+                                                        <label htmlFor="">{item.lapangan.detailsLapangan.name}</label>
                                                     </div>
                                                     <span className='inline-flex justify-between w-full '>
                                                         <label htmlFor="">02-10-2024</label>
@@ -102,10 +103,10 @@ const Dashboard = () => {
                         </div>
 
                     </div>
-                    {/* <div className='absolute bottom-0 right-0 inline-flex gap-2'>
+                    <div className='absolute bottom-0 right-0 inline-flex gap-2'>
                         <ButtonBooking />
                         <ButtonScan />
-                    </div> */}
+                    </div>
 
                 </div>
             )

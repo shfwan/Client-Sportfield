@@ -3,9 +3,12 @@ import { create } from "zustand";
 const date = new Date
 
 export const useOrderStore = create((set) => ({
-    date: date.getDate(),
+    date: date.toLocaleDateString(),
     jam: [],
     isOrder: false,
+    imgPos: 0,
+
+    setImgPos: (pos) => set({ imgPos: pos }),
 
     setDate: (date) => set({ date: date }),
     setJam: (jam) => set((state) => ({ jam: [...state.jam, jam] })),

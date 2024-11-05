@@ -30,7 +30,7 @@ export const usePatchOrder = ({ onSuccess, onError }) => {
     return useMutation({
         mutationKey: ["update.orderStatus"],
         mutationFn: async (body) => {
-            return axiosAuth.patch(`/api/v2/order/lapangan/${body.lapanganId}/information/${body.detailOrder.detailLapanganId}/pembayaran?orderId=${body.id}`)
+            return axiosAuth.patch(`/api/v2/order/lapangan/${body.lapanganId}/information/${body.detailLapanganId}/pembayaran?orderId=${body.id}`)
         },
         onSuccess,
         onError

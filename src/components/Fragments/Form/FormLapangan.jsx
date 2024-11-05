@@ -6,6 +6,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import InputImage from '../Image/InputImage'
+import ImagePreview from '@/components/Elements/Image'
 
 const FormLapangan = ({ data, onClick, type = "create" }) => {
     const router = useRouter()
@@ -76,8 +78,8 @@ const FormLapangan = ({ data, onClick, type = "create" }) => {
     }
 
     return (
-        <form className='w-fit' onSubmit={formik.handleSubmit} action="#">
-            <div className="flex flex-col gap-4">
+        <form className='w-full h-full' onSubmit={formik.handleSubmit} action="#">
+            <div className="flex flex-col gap-4 w-full">
                 <InputForm onChange={handleFormikInput} type="text" value={formik.values.name} title="Name" name="name" />
                 <input type="file" name="picture" id="" onChange={handleFormikFile} className='file-input w-full max-w-xs' />
                 <Textarea name="description" title="Deskripsi" className="" placeholder="Deskripsi lapangan" onChange={handleFormikInput} />

@@ -9,6 +9,8 @@ import { ToRupiah } from "@/lib/toRupiah"
 import { useSession } from "next-auth/react"
 import { jwtDecode } from "jwt-decode"
 import { useQueryClient } from "@tanstack/react-query"
+import { TbBuildingCottage } from "react-icons/tb"
+import { GiShuttlecock } from "react-icons/gi"
 
 const FormPembayaran = ({ item, onClick = () => { } }) => {
     const { data: session } = useSession()
@@ -24,18 +26,18 @@ const FormPembayaran = ({ item, onClick = () => { } }) => {
 
             if (session) {
                 const token = jwtDecode(session.user.token)
-                
-                if(token.role === "customer") {
+
+                if (token.role === "customer") {
                     window.location.href = "/pemesanan"
-                } else if(token.role === "provider") {
+                } else if (token.role === "provider") {
                     queryClient.invalidateQueries({ queryKey: ['fetch.order', 'fetch.statistik'] })
                 }
             }
         },
         onError: () => {
+            clearJam()
             document.getElementById("modalPembayaran" + item?.id).close()
             toast.error("Gagal melakukan checkout", { style: { backgroundColor: "#ff5861" } })
-            clearJam()
 
         }
     })
@@ -48,32 +50,43 @@ const FormPembayaran = ({ item, onClick = () => { } }) => {
         if (session) {
             const token = jwtDecode(session.user.token)
 
-            OrderLapangan({ id: item.id, lapanganId: item.lapanganId, data: { date: token.role === "customer" ? date : tanggal.getDate(), jam } })
+            OrderLapangan({ id: item.id, lapanganId: item.lapanganId, data: { date: token.role === "customer" ? date : tanggal.toLocaleDateString(), jam } })
         }
     }
 
     return (
         <form className="block space-y-4 min-w-[36rem]" onSubmit={handleSubmitForm}>
             <div className="flex gap-x-4 h-fit">
-                <figure className="aspect-auto max-w-72">
-                    <ImagePreview className="rounded-md" src={faker.image.url()} />
+                <figure className='max-h-72 bg-gray-400'>
+                    <img
+                        className="max-h-72 min-w-96 max-w-96 rounded-md aspect-video object-cover flex-[1_0_100%]"
+                        src={process.env.NEXT_PUBLIC_API + "/api/v1/lapangan/picture/" + item.picture}
+                        alt={item.name} />
                 </figure>
+
+
                 <div className="block space-y-4">
                     <h2 className="font-semibold">{item.name}</h2>
-                    <h2 className="font-semibold">{item.type}/<label className="font-bold">{item.statusLapangan}</label></h2>
-                    <h2 className="font-semibold">{ToRupiah(item.price)}</h2>
+                    <span className='inline-flex gap-2 w-full items-center'>
+                        <TbBuildingCottage color='#9ca3af' size={20} />
+                        <h5 className='text-sm text-gray-400'>{item.statusLapangan}</h5>
+                    </span>
+                    <span className='inline-flex gap-2 w-full items-center'>
+                        <GiShuttlecock color='#9ca3af' size={20} className='-rotate-[140deg] ' />
+                        <h5 className='text-sm text-gray-400'>{item.type}</h5>
+                    </span>
+                    <div className="block max-w-96">
+                        <h3 className="font-bold text-lg">Deskripsi</h3>
+                        <p className="font-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus temporibus dicta excepturi eaque voluptatibus quod et, nulla ipsum quasi vitae laborum, suscipit provident, aliquam ab libero totam sed beatae quaerat!</p>
+                    </div>
                 </div>
-            </div>
-            <div className="block max-w-[36rem]">
-                <h3 className="font-bold text-lg">Deskripsi</h3>
-                <p className="font-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus temporibus dicta excepturi eaque voluptatibus quod et, nulla ipsum quasi vitae laborum, suscipit provident, aliquam ab libero totam sed beatae quaerat!</p>
             </div>
 
             <h3 className="font-bold text-lg">Pilih Jam</h3>
             <ListJamLapangan lapangan={item} />
             <div className="inline-flex gap-4 justify-center w-full">
                 <Button className="text-white btn-error " onClick={onClick}>Cancel</Button>
-                <Button className={jam < 1 ? "btn-disabled" : "btn-success"} type="submit">Order Sekarang</Button>
+                <Button className={jam < 1 ? "btn-disabled text-white" : "btn-success text-white"} type="submit">Order Sekarang</Button>
             </div>
         </form>
     )

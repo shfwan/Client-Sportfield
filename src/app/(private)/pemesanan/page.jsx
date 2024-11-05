@@ -9,16 +9,16 @@ import React from 'react'
 
 const PemesananPage = () => {
   const { data: session } = useSession()
-    
+
   if (session) {
     const role = jwtDecode(session.user.token).role
-    
+
     if (role === "customer") {
       return (
         <>
-          <main className='container mx-auto p-2 md:p-16 min-h-screen'>
+          <main className='container mx-auto p-2 md:p-16 min-h-screen bg-white'>
             {/* <h1 className='font-bold text-success text-3xl'>Pemesanan</h1> */}
-            <ListPemesanan token={session.user.token}/>
+            <ListPemesanan token={session.user.token} />
           </main>
           <Footer />
         </>

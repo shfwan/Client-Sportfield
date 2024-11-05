@@ -10,8 +10,8 @@ const ChangePassword = () => {
     <div>
       <Button className="text-white btn btn-info" onClick={() => document.getElementById("changePassword").showModal()}>
         <Key />Ubah Password</Button>
-      <ModalLayout btnX={false} id="changePassword" title="Ubah Password" onClick={() => document.getElementById("changePassword").close()}>
-        <FormUbahPassword/>
+      <ModalLayout id="changePassword" title="Ubah Password" onClick={() => document.getElementById("changePassword").close()}>
+        <FormUbahPassword />
       </ModalLayout>
     </div>
   )

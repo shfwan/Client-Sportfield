@@ -3,7 +3,7 @@ import MenuNavbar from '@/components/Fragments/MenuNavbar/MenuNavbar'
 import { Menu, X } from 'react-feather'
 import { usePostLogout } from '@/features/auth'
 import ImagePreview from '@/components/Elements/Image'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useStorePublic } from '@/store/storePublic'
@@ -25,11 +25,11 @@ const TopNavbarLayout = () => {
                     </figure>
                     <ul tabIndex={0} className="mt-5 dropdown-content space-y-2 menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                         <li>
-                            <Button className='btn-success btn-outline min-w-32' onClick={() => router.push("/profil")}>Profil</Button>
+                            <Button className='btn-success btn-outline min-w-32 hover:text-white' onClick={() => router.push("/profil")}>Profil</Button>
 
                         </li>
                         <li>
-                            <Button className='btn-error min-w-32' onClick={usePostLogout}>Keluar</Button>
+                            <Button className='btn-error min-w-32 text-white' onClick={usePostLogout}>Keluar</Button>
                         </li>
                     </ul>
                 </div>
@@ -49,7 +49,7 @@ const TopNavbarLayout = () => {
     return (
         <div className='flex w-full h-fit items-center justify-center sticky top-0 z-50 shadow-md'>
             <div className='bg-success w-full p-2'>
-                <nav className='w-full'>
+                <nav className='w-full' >
                     <ul className='flex w-full flex-row items-center justify-start gap-6 z-50'>
                         <div className='relative sm:hidden btn btn-outline btn-success'>
                             {

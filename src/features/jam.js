@@ -5,7 +5,7 @@ export const useListJam = (item, date) => {
     return useQuery({
         queryKey: ["fetch.ListJam", date],
         queryFn: async () => {
-            return await axiosInstace.get(`/api/v1/lapangan/${item.lapanganId}/information/${item.id}/jam?day=${date}&month=09&year=2024`)
+            return await axiosInstace.get(`/api/v1/lapangan/${item.lapanganId}/information/${item.id}/jam?date=${date}`)
         },
     })
 }

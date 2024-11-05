@@ -3,7 +3,7 @@ const CardLapangan = ({ className, children, onClick = () => { } }) => {
 
     return (
         <div
-            className={`card bg-base-100 ${className} shadow-md transition-all bg-white`}
+            className={`card w-96 bg-base-100 ${className} shadow-md transition-all bg-white`}
             onClick={onClick}
         >
             {children}

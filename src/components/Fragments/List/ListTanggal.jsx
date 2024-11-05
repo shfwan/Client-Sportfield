@@ -11,7 +11,7 @@ import Button from '@/components/Elements/Button'
 
 const ListTanggal = () => {
     const tanggal = new Date()
-    const [date, setDate] = useOrderStore((state) => [state.date, state.setDate])
+    const [date, setDate] = useOrderStore((state) => [state.date, state.setDate])    
 
     const hari = [
         "Minggu",
@@ -40,11 +40,6 @@ const ListTanggal = () => {
 
     const currentDate = dayjs();
     const [today, setToday] = useState(currentDate);
-    const [selectDate, setSelectDate] = useState(currentDate);
-
-    // generateDate()[0].date.
-
-    console.log();
     
 
     return (
@@ -55,14 +50,18 @@ const ListTanggal = () => {
                         <div className="flex flex-row gap-4 w-full">
                             {
                                 generateDate(today.month(), today.year()).map(
-                                    ({ date, currentMonth, today }, index) => {
-                                        console.log(date.toDate().toLocaleDateString().split("/"));
+                                    ({ date:tanggal }, index) => {
+                                        const checkDate = currentDate.date() > tanggal.date()
+                                        const checkMonth = currentDate.month() > tanggal.month()
+
+                                        const disableDate = !checkMonth ? checkDate ? "text-gray-400": "text-gray-800" : "text-gray-400"
+                                        const disableDateBtn = !checkMonth ? checkDate ? "btn-disabled": "" : "btn-disabled"
                                         
                                         return (
-                                            <RadioButton key={index} value={date.toDate().toLocaleDateString()}>
+                                            <RadioButton className={disableDateBtn} key={index} value={tanggal.toDate().toLocaleDateString()}>
                                                 <span className='flex items-center justify-center flex-col gap-2'>
-                                                    <label className='text-gray-400 text-sm' htmlFor="">{hari[date.day()]}</label>
-                                                    <label className='text-gray-800 text-base' htmlFor="">{date.toDate().toLocaleDateString().split("/")[1]} {months[date.toDate().toLocaleDateString().split("/")[0] - 1]}</label>
+                                                    <h2 className='text-gray-400 text-sm' htmlFor="">{hari[tanggal.day()]}</h2>
+                                                    <h2 className={`${disableDate} text-base`} htmlFor="">{tanggal.toDate().toLocaleDateString().split("/")[1]} {months[tanggal.toDate().toLocaleDateString().split("/")[0] - 1]}</h2>
                                                 </span>
                                             </RadioButton>
                                         );
@@ -71,7 +70,7 @@ const ListTanggal = () => {
                         </div>
                     </div>
                 </RadioGroup>
-                <DropdownLayout className="bg-white absolute -translate-x-[28.9rem] w-[21rem] md:translate-x-0 md:w-fit mt-20 z-50" icon={<Calendar />} title="Calendar" >
+                <DropdownLayout className="bg-white absolute w-[21rem] md:-translate-x-52  md:w-fit mt-24 z-50" icon={<Calendar />} title="Calendar" >
                     <AppCalendar />
                 </DropdownLayout>
             </div>

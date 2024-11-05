@@ -27,10 +27,10 @@ const Jam = ({ item }) => {
             <div className='flex flex-col gap-2 p-3'>
                 <label className={`font-semibold text-xs ${!item.isAvailable ? "text-gray-400" : isChecked ? "text-success" : "text-gray-400"} }`} htmlFor="">60 menit</label>
                 <div className='inline-flex justify-center gap-4 min-w-24 w-full'>
-                    <label className={`text-[17px] ${!item.isAvailable ? "text-gray-400" : isChecked ? "text-success" : "text-gray-700"}  font-bold`} htmlFor="">{item.open}</label>
-                    <label className={`text-[17px] ${!item.isAvailable ? "text-gray-400" : isChecked ? "text-success" : "text-gray-700"}  font-bold`} htmlFor="">{item.close}</label>
+                    <h2 className={`text-[17px] ${!item.isAvailable ? "text-gray-400" : isChecked ? "text-success" : "text-gray-700"}  font-bold`} htmlFor="">{item.open}</h2>
+                    <h2 className={`text-[17px] ${!item.isAvailable ? "text-gray-400" : isChecked ? "text-success" : "text-gray-700"}  font-bold`} htmlFor="">{item.close}</h2>
                 </div>
-                <label className={`text-lg font-normal ${!item.isAvailable ? "text-gray-400" : isChecked ? "text-success" : "text-gray-700"} `} htmlFor="">{ToRupiah(50000)}</label>
+                <h2 className={`text-lg font-normal ${!item.isAvailable ? "text-gray-400" : isChecked ? "text-success" : "text-gray-700"} `} htmlFor="">{ToRupiah(50000)}</h2>
             </div>
         </CheckboxButton>
     )

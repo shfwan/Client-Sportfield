@@ -10,6 +10,8 @@ import CardLapanganSkeleton from '../Card/CardLapangan/CardLapanganSkeleton'
 import { faker } from '@faker-js/faker'
 import { HiOutlinePencilAlt, HiOutlineTrash } from 'react-icons/hi'
 import { ToRupiah } from '@/lib/toRupiah'
+import { TbBuildingCottage } from 'react-icons/tb'
+import { GiShuttlecock } from 'react-icons/gi'
 
 const ListLapanganTersediaProvider = ({ id, jam }) => {
 
@@ -68,7 +70,7 @@ const ListLapanganTersediaProvider = ({ id, jam }) => {
                     {
                         lapanganTersediaLoading ? CardLapanganSkeleton() : lapanganTersedia?.data.data.map((item, index) => (
                             <div key={index}>
-                                <CardLapangan className="w-fit h-fit cursor-pointer">
+                                {/* <CardLapangan className="w-fit h-fit cursor-pointer">
                                     <CardLapangan.Header className="">
                                         <figure className='max-w-96'>
                                             <ImagePreview
@@ -90,8 +92,37 @@ const ListLapanganTersediaProvider = ({ id, jam }) => {
                                         <Button className="text-white btn-warning" onClick={() => document.getElementById("lapanganTersediaUpdate" + item.id).showModal()}><HiOutlinePencilAlt size={24} /></Button>
                                         <Button className="text-white btn-error" onClick={() => deleteLapanganTersedia({ id: item.id, lapanganId: item.lapanganId })}><HiOutlineTrash size={24} /></Button>
                                     </CardLapangan.Footer>
-                                </CardLapangan>
-                                <ModalLayout id={"lapanganTersediaUpdate" + item.id} title="Edit Lapangan Tersedia" btnX={false}>
+                                </CardLapangan> */}
+                                <div className="card bg-base-100 w-96 shadow-lg">
+                                    <figure className='min-h-72 max-h-72 bg-gray-400'>
+                                        <img
+                                            src={process.env.NEXT_PUBLIC_API + "/api/v1/lapangan/picture/" + item.picture}
+                                            alt={item.name} />
+                                    </figure>
+                                    <div className="card-body">
+                                        <h2 className="card-title">{item.name}</h2>
+                                        {/* <p>{item.description}</p> */}
+                                        <div className='block w-full'>
+                                            <p>{item.description}</p>
+                                            <label htmlFor="jam">{item.jam[0].open} - {item.jam[item.jam.length - 1].close}</label>
+
+                                            <span className='inline-flex gap-2 w-full items-center'>
+                                                <TbBuildingCottage color='#9ca3af' size={20} />
+                                                <h5 className='text`-sm text-gray-400'>{item.statusLapangan}</h5>
+                                            </span>
+                                            <span className='inline-flex gap-2 w-full items-center'>
+                                                <GiShuttlecock color='#9ca3af' size={20} className='-rotate-[140deg] ' />
+                                                <h5 className='text-sm text-gray-400'>{item.type}</h5>
+                                            </span>
+                                            <h4 className='font-semibold text-base'>{ToRupiah(item.price)} / sesi</h4>
+                                        </div>
+                                        <div className="card-actions justify-end">
+                                            <Button className="text-white btn-warning" onClick={() => document.getElementById("lapanganTersediaUpdate" + item.id).showModal()}><HiOutlinePencilAlt size={24} /></Button>
+                                            <Button className="text-white btn-error" onClick={() => deleteLapanganTersedia({ id: item.id, lapanganId: item.lapanganId })}><HiOutlineTrash size={24} /></Button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ModalLayout  id={"lapanganTersediaUpdate" + item.id} title="Edit Lapangan Tersedia" btnX={false}>
                                     <FormLapanganTersedia type='update' jam={jam} data={item} id={id} onClick={() => document.getElementById("lapanganTersediaUpdate" + item.id).close()} />
                                 </ModalLayout>
                             </div>

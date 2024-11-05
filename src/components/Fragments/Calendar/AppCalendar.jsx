@@ -3,12 +3,16 @@ import { useState } from "react";
 import { generateDate, months } from "./calendar";
 import cn from "./cn";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { useOrderStore } from "@/store/orderStore";
 
 export default function Calendar() {
 	const days = ["S", "M", "T", "W", "T", "F", "S"];
 		const currentDate = dayjs();
 		const [today, setToday] = useState(currentDate);
-		const [selectDate, setSelectDate] = useState(currentDate);
+		const [date, setDate] = useOrderStore((state) => [state.date, state.setDate])
+		
+
+		const dates = new Date(date)		
 
 	return (
 		<div className="flex gap-10 sm:divide-x justify-center p-4 mx-auto text-black  items-center sm:flex-row flex-col">
@@ -59,25 +63,29 @@ export default function Calendar() {
 				{/* Tanggal */}
 				<div className=" grid grid-cols-7 ">
 					{generateDate(today.month(), today.year()).map(
-						({ date, currentMonth, today }, index) => {
+						({ date: tanggal, currentMonth, today: currentToday }, index) => {	
+							const checkDate = currentDate.date() > tanggal.date()
+							const checkMonth = currentDate.month() > tanggal.month()
+
 							return (
 								<div
 									key={index}
 									className="p-2 text-center h-14 grid place-content-center text-sm border-t"
 								>
-									<button disabled={selectDate.toDate().getDate() >= selectDate.toDate().getDate() - 1 ? false : true}
+									<button disabled={!checkMonth ? (checkDate ? true : false) : true}
 										className={cn(
+											!checkMonth ? (checkDate ? "text-gray-400" : "") : "text-gray-400",
 											currentMonth ? "" : "text-gray-400",
-											today ? "bg-red-600 text-white" : "",
-											selectDate.toDate().toDateString() === date.toDate().toDateString() ? "bg-black text-white" : "",
+											currentToday ? "bg-red-600 text-white" : "",
+											dates.toLocaleDateString() == tanggal.toDate().toLocaleDateString() ? "bg-black text-white" : "",
 											" h-10 w-10 rounded-full grid place-content-center hover:bg-black hover:text-white transition-all cursor-pointer select-none",
 
 										)}
 										onClick={() => {
-											setSelectDate(date);
+											setDate(tanggal.toDate().toLocaleDateString());
 										}}
 									>
-										{date.date()}
+										{tanggal.date()}
 									</button>
 								</div>
 							);

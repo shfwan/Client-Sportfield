@@ -181,12 +181,6 @@ const DetailPemesanan = ({ orderId, data, token }) => {
             return (
                 <div className='flex flex-col md:flex-row items-center justify-center gap-6'>
                     <div className='block space-y-6 max-w-xl'>
-                        {/* <div className='flex justify-center flex-col items-center gap-1'>
-                            <IoArrowUpCircleSharp className='text-4xl text-success' />
-                            <h1 className='font-semibold text-lg'>Rp. {orderDetail?.data.data.total}</h1>
-                            <p>Ditransfer ke {data.name}</p>
-                            <p>{date.toLocaleDateString()}<span>, </span>{date.toLocaleTimeString()}</p>
-                        </div> */}
 
                         <div className='flex flex-col gap-y-2 items-center justify-center w-full'>
                             <figure className='aspect-square max-w-24'>

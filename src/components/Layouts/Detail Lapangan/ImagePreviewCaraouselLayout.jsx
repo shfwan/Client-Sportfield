@@ -6,61 +6,66 @@ import CaraouselModalPreview from '@/components/Fragments/Caraousel/CaraouselMod
 import { ArrowLeft, Image } from 'react-feather'
 import { faker } from '@faker-js/faker'
 import GalleryMasonryLayout from '../GalleryMasonryLayout'
+import { useQuery } from '@tanstack/react-query'
+import { axiosInstace } from '@/lib/axios'
+import { useSearchParams } from 'next/navigation'
+import CaraouselGallery from '@/components/Fragments/Caraousel/CaraouselGallery'
+import ModalGalleryLayout from '../ModalGalleryLayout'
 
 const ImagePreviewCaraouselLayout = () => {
+    const state = useSearchParams()
 
-    const slides = [
-        faker.image.url().toString(),
-        faker.image.url().toString(),
-        faker.image.url().toString(),
-    ]
+
+    const { data: gallery, isLoading: galleryLoading } = useQuery({
+        queryKey: ["fetch.gallery"],
+        queryFn: async () => {
+            return await axiosInstace.get(`/api/v1/lapangan/${state.get("id")}/gallery`)
+        }
+    })
 
     const [isPreview, setIsPreview] = useState(false)
 
-    const handleModal = () => {
-        if (isPreview) {
-            setIsPreview(!isPreview)
-        } else {
-            document.getElementById("modalCarauoselImagePreview").close()
-        }
-    }
-
     return (
         <div className="relative">
-            <Caraousel className='max-w-7xl min-h-full:' autoSlideInterval={3000}>
+            <Caraousel className='max-w-7xl' autoSlideInterval={3000}>
                 {
-                    slides.map((item, i) => (
-                        <ImagePreview
-                            className="flex-[1_0_100%] snap-start"
-                            key={i}
-                            src={item}
-                            alt="Shoes" />
+                    gallery?.data.data.map((item, i) => (
+                        <figure className='min-w-full bg-gray-300'>
+                            <img
+                                className='rounded-sm flex-[1_0_100%] max-h-[790px] size-full place-self-center object-contain '
+                                src={process.env.NEXT_PUBLIC_API + "/api/v1/lapangan/picture/" + item.filename}
+                                alt={item.name}
+                            />
+                        </figure>
                     ))
                 }
             </Caraousel>
             {/* Full image preview */}
-            <div className='absolute bottom-2 right-2 cursor-pointer' onClick={() => document.getElementById("modalCarauoselImagePreview").showModal()}>
+            <div className='absolute bottom-2 right-2 cursor-pointer' onClick={() => document.getElementById("previewImage").showModal()}>
                 <div className='p-2 rounded-md bg-opacity-50 bg-white'>
                     <Image color='white' />
                 </div>
             </div>
-            {/* Modal preview image */}
-            <ModalLayout id="modalCarauoselImagePreview" title="Gallery" className="bg-white/50 flex flex-col gap-4" onClick={handleModal}>
-                <div className=''>
-                    <CaraouselModalPreview className='max-w-[60rem]' data={slides}>
 
+            {/* Modal preview image */}
+            <ModalGalleryLayout id="previewImage" title="Gallery" onClick={() => { !isPreview ? document.getElementById("previewImage").close() : setIsPreview(!isPreview) }}>
+                {
+                    !galleryLoading ? <CaraouselGallery data={gallery?.data.data}>
                         {
-                            slides.map((item, i) => (
-                                <ImagePreview
-                                    className="rounded-md"
-                                    key={i}
-                                    src={item.toString()}
-                                    alt="Image" />
+                            gallery?.data.data.map((item, index) => (
+                                <figure className='min-w-full -translate-y-2 '>
+                                    <img
+                                        className='rounded-sm flex-[1_0_100%] max-h-[790px] size-full place-self-center object-contain '
+                                        src={process.env.NEXT_PUBLIC_API + "/api/v1/lapangan/picture/" + item.filename}
+                                        alt={item.name}
+                                    />
+                                </figure>
                             ))
                         }
-                    </CaraouselModalPreview>
-                </div>
-            </ModalLayout>
+                    </CaraouselGallery> : <></>
+                }
+
+            </ModalGalleryLayout>
         </div>
     )
 }

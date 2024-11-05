@@ -8,11 +8,12 @@ import { FaImage, FaImages } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineTrash } from "react-icons/hi";
 import Caraousel from '../Caraousel/Caraousel';
+import { toast } from 'react-toastify';
 
 
 const FormGallery = ({ data }) => {
     const axiosAuth = useAxiosAuth()
-    const [isPercent, setPercent] = useState(false)  
+    const [isPercent, setPercent] = useState(false)
 
     const { mutate: uploadGambar } = useMutation({
         mutationFn: async (body) => {
@@ -20,19 +21,10 @@ const FormGallery = ({ data }) => {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },
-                onUploadProgress: (progressEvent) => {
-                    const { loaded, total } = progressEvent
-                    const percent = Math.floor((loaded * 100) / total)
-                    document.getElementById("progress").setAttribute("value", percent)
-                    document.getElementById("progress-label").innerText = `${percent}%`
-                    if(percent == 100){
-                        setPercent(true)
-                    }
-                }
             })
         },
         onSuccess: () => {
-            toast.success("Berhasil Upload")
+            toast.success("Berhasil Upload", { style: { backgroundColor: "#00a96e" } })
         }
     })
 
@@ -77,9 +69,9 @@ const FormGallery = ({ data }) => {
                 onClick={() => document.getElementById("file").click()}
                 onSubmit={formik.handleSubmit}>
 
-                <div className='flex flex-col min-w-96 min-h-72 items-center justify-center gap-2 border-2 border-dashed border-info rounded-md'>
+                <div className='flex flex-col min-w-96 min-h-72 items-center justify-center gap-2 border-2 hover:scale-105 transition-all border-dashed border-info rounded-md cursor-pointer'>
                     <FaImages color='gray' size={50} />
-                    <label className='font-semibold text-lg' htmlFor="">Drag or click to upload</label>
+                    <h3 className='font-semibold text-lg' htmlFor="">Click to upload</h3>
                 </div>
                 <input
                     id='file'
@@ -102,7 +94,7 @@ const FormGallery = ({ data }) => {
 
                                 ))
                             } */}
-                            <div className='inline-flex items-center justify-start gap-4 min-w-96 bg-blue-100 p-4 rounded-md'>
+                            {/* <div className='inline-flex items-center justify-start gap-4 min-w-96 bg-blue-100 p-4 rounded-md'>
                                 <FaImage color='blue' size={28} />
                                 <div className='block w-full'>
                                     <div className='inline-flex items-center justify-center gap-x-4 w-full'>
@@ -115,8 +107,8 @@ const FormGallery = ({ data }) => {
                                 <progress id='progress' className={`${isPercent ? "hidden" : "block"} progress progress-primary w-full`} value="0" max="100"></progress>
                                 </div>
                                 
-                                {/* <HiOutlineTrash className='cursor-pointer' color='red' size={26} onClick={handleDeleteFile} /> */}
-                            </div>
+                                <HiOutlineTrash className='cursor-pointer' color='red' size={26} onClick={handleDeleteFile} />
+                            </div> */}
                         </div>
 
                     ) : null
