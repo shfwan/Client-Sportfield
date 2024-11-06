@@ -180,7 +180,7 @@ const DetailPemesanan = ({ orderId, data, token }) => {
         } else if (token.role === "provider" && renderStatusBermain() !== undefined) {
             return (
                 <div className='flex flex-col md:flex-row items-center justify-center gap-6'>
-                    <div className='block space-y-6 max-w-xl'>
+                    <div className='block space-y-6 max-w-xl'> 
 
                         <div className='flex flex-col gap-y-2 items-center justify-center w-full'>
                             <figure className='aspect-square max-w-24'>

@@ -6,6 +6,7 @@ import { useStorePublic } from '@/store/storePublic'
 import { useMutation } from '@tanstack/react-query'
 import useAxiosAuth from '@/hooks/useAxiosAuth'
 import { toast } from 'react-toastify'
+import EditPhotoProfil from '../EditPhotoProfil/EditPhotoProfil'
 const FormProfile = ({ state }) => {
     const { isDisable, setDisable } = useStorePublic()
 
@@ -47,6 +48,10 @@ const FormProfile = ({ state }) => {
 
     return (
         <div className='block w-full space-y-4'>
+            <div className="flex flex-col items-center text-center gap-4 w-full">
+                <EditPhotoProfil state={state?.picture} />
+                <h1 className="font-poppins font-semibold text-xl text-black">{formik.values.firstname + " " + formik.values.lastname}</h1>
+            </div>
             <form className='w-full px-4 md:px-0 max-w-2xl' action='' method='patch'>
                 <InputForm
                     title="First Name"
