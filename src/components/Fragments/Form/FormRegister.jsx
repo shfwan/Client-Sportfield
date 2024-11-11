@@ -30,6 +30,12 @@ const FormRegister = () => {
             usePostRegister(formik.values).then(() => {
                 router.push("/login")
 
+            }).then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: "Register Success",
+                })
             }).catch(err => {
                 Swal.fire({
                     icon: "error",

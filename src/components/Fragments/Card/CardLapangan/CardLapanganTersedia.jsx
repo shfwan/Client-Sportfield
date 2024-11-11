@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import CardLapangan from './CardLapangan'
-import ImagePreview from '@/components/Elements/Image'
 import Button from '@/components/Elements/Button'
 import { useOrderStore } from '@/store/orderStore'
 import { faker } from '@faker-js/faker'

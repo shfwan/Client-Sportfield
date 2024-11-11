@@ -23,6 +23,7 @@ const CaraouselGallery = ({ lapanganId, children, data }) => {
             return axiosAuth.delete(`/api/v2/lapangan/${body.lapanganId}/information/${body.id}/gallery/remove`)
         },
         onSuccess: () => {
+            document.getElementById("previewImage").close()
             queryClient.invalidateQueries("fetch.gallery")
             toast.success("Berhasil Hapus gambar", { style: { backgroundColor: "#00a96e" } })
         },
@@ -39,8 +40,8 @@ const CaraouselGallery = ({ lapanganId, children, data }) => {
                 return (
                     <div className={`absolute top-0 w-full flex overflow-x-scroll no-scrollbar bg-black/50 p-4 text-white`}>
                         <div className='inline-flex gap-2 w-full container mx-auto max-w-7xl items-center justify-between'>
-                            <label htmlFor="">{data[curr].filename}</label>
-                            <label htmlFor="">{data[curr].date}</label>
+                            <label htmlFor="">{data[curr]?.filename}</label>
+                            <label htmlFor="">{data[curr]?.date}</label>
                             <Button className="text-white btn-error" onClick={() => deleteGallery({ lapanganId: lapanganId, id: data[imgPos].id })}> <HiOutlineTrash size={24} /></Button>
                         </div>
                     </div>

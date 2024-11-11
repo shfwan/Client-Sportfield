@@ -6,7 +6,7 @@ export const useCheckOut = ({ onSuccess, onError }) => {
     const axiosAuth = useAxiosAuth()
     return useMutation({
         mutationFn: async (body) => {
-            return await axiosAuth.post(`/api/v2/order/lapangan/${body.lapanganId}/information/${body.id}/checkout`, body.data)
+            return await axiosAuth.post(`/api/v2/order/lapangan/${body.lapanganId}/transaction/${body.id}/checkout`, body.data)
         },
         onSuccess,
         onError

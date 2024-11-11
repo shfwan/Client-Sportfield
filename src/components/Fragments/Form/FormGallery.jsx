@@ -1,7 +1,7 @@
 import Button from '@/components/Elements/Button';
 import ImagePreview from '@/components/Elements/Image';
 import useAxiosAuth from '@/hooks/useAxiosAuth'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react';
 import { FaImage, FaImages } from "react-icons/fa";
@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 
 const FormGallery = ({ data }) => {
     const axiosAuth = useAxiosAuth()
-    const [isPercent, setPercent] = useState(false)
+    const queryClient = useQueryClient()
 
     const { mutate: uploadGambar } = useMutation({
         mutationFn: async (body) => {
@@ -24,6 +24,8 @@ const FormGallery = ({ data }) => {
             })
         },
         onSuccess: () => {
+            queryClient.invalidateQueries("fetch.gallery")
+            document.getElementById("modalGalleryTambah").close()
             toast.success("Berhasil Upload", { style: { backgroundColor: "#00a96e" } })
         }
     })

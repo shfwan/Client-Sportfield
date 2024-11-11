@@ -42,7 +42,7 @@ export const useUpdateLapangan = ({ onSuccess }) => {
         mutationFn: async (body) => {
             return await axiosAuth.patch(`/api/v2/lapangan/${body.id}`, body.data)
         },
-        onSuccess: onSuccess
+        onSuccess
     })
 }
 

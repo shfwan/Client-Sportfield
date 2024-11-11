@@ -43,7 +43,8 @@ const CardPemesanan = ({ data }) => {
         type: lapanganTersedia?.data.data.type + "/" + lapanganTersedia?.data.data.statusLapangan,
         statusPembayaran: data.statusPembayaran,
         orderStatus: data.orderStatus,
-        playStatus: data.playStatus
+        playStatus: data.playStatus,
+        snapToken: data.snapToken
 
     }
 

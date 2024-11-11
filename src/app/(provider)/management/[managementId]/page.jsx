@@ -32,12 +32,6 @@ const ManagementDetail = () => {
         }
     })
 
-    const slides = [
-        "/404.png",
-        "/Logo.png",
-        "/LogoIcon.png",
-    ]
-
     const jam = {
         open: detailLapangan?.data.data.open,
         close: detailLapangan?.data.data.close
@@ -146,24 +140,30 @@ const ManagementDetail = () => {
                         }
                     </GalleryMasonryLayout>
                 </div>
-                <ModalGalleryLayout id="previewImage" title="Gallery" onClick={() => { !isPreview ? document.getElementById("previewImage").close() : setIsPreview(!isPreview) }}>
-                    {
-                        !galleryLoading ? <CaraouselGallery lapanganId={lapanganId} data={gallery?.data.data}>
-                            {
-                                gallery?.data.data.map((item, index) => (
-                                    <figure className='min-w-full -translate-y-2 '>
-                                        <img
-                                            className='rounded-sm flex-[1_0_100%] max-h-[790px] size-full place-self-center object-contain '
-                                            src={process.env.NEXT_PUBLIC_API + "/api/v1/lapangan/picture/" + item.filename}
-                                            alt={item.name}
-                                        />
-                                    </figure>
-                                ))
-                            }
-                        </CaraouselGallery> : <></>
-                    }
 
-                </ModalGalleryLayout>
+                {!galleryLoading ? (
+                        <ModalGalleryLayout id="previewImage" title="Gallery" onClick={() => { !isPreview ? document.getElementById("previewImage").close() : setIsPreview(!isPreview) }}>
+                            {
+                                gallery?.data.data.length > 0 ? (
+                                    <CaraouselGallery lapanganId={lapanganId} data={gallery?.data.data}>
+                                        {
+                                            gallery?.data.data.map((item, index) => (
+                                                <figure className='min-w-full -translate-y-2 '>
+                                                    <img
+                                                        className='rounded-sm flex-[1_0_100%] max-h-[790px] size-full place-self-center object-contain '
+                                                        src={process.env.NEXT_PUBLIC_API + "/api/v1/lapangan/picture/" + item.filename}
+                                                        alt={item.name}
+                                                    />
+                                                </figure>
+                                            ))
+                                        }
+                                    </CaraouselGallery>
+                                ) : <></>
+                            }
+
+                        </ModalGalleryLayout>
+                    ) : <></>
+                }
 
                 {/* Lapangan Tersedia */}
                 <ListLapanganTersediaProvider id={lapanganId} jam={jam} />

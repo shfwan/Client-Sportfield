@@ -30,14 +30,15 @@ const FormPembayaran = ({ item, onClick = () => { } }) => {
                 if (token.role === "customer") {
                     window.location.href = "/pemesanan"
                 } else if (token.role === "provider") {
-                    queryClient.invalidateQueries({ queryKey: ['fetch.order', 'fetch.statistik'] })
+                    queryClient.invalidateQueries('fetch.order')
+                    queryClient.invalidateQueries('fetch.statistik')
                 }
             }
         },
         onError: () => {
-            clearJam()
             document.getElementById("modalPembayaran" + item?.id).close()
             toast.error("Gagal melakukan checkout", { style: { backgroundColor: "#ff5861" } })
+            clearJam()
 
         }
     })
@@ -77,7 +78,7 @@ const FormPembayaran = ({ item, onClick = () => { } }) => {
                     </span>
                     <div className="block max-w-96">
                         <h3 className="font-bold text-lg">Deskripsi</h3>
-                        <p className="font-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus temporibus dicta excepturi eaque voluptatibus quod et, nulla ipsum quasi vitae laborum, suscipit provident, aliquam ab libero totam sed beatae quaerat!</p>
+                        <p className="font-light px-2">{item.description == "" ? "-" : item.description}</p>
                     </div>
                 </div>
             </div>

@@ -5,11 +5,12 @@ import { useFetchOrders } from '@/features/order';
 import { useFetchByIdUser } from '@/features/user';
 import useAxiosAuth from '@/hooks/useAxiosAuth';
 import { ToRupiah } from '@/lib/toRupiah';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React from 'react'
 import { toast } from 'react-toastify';
 
-const FormKonfirmasi = ({ data, onClick }) => {
+const   FormKonfirmasi = ({ data, onClick }) => {
+    const queryClient = useQueryClient()
 
     const renderStatusBermain = () => {
         if (data?.playStatus === false && data?.orderStatus === true && data?.statusPembayaran === false) {
@@ -25,8 +26,6 @@ const FormKonfirmasi = ({ data, onClick }) => {
 
     const { data: user } = useFetchByIdUser(data?.userId)
     const { data: orderDetail, isLoading } = useFetchOrders(data?.id)
-    console.log(data, orderDetail);
-
 
     const axiosAuth = useAxiosAuth()
 
@@ -35,6 +34,8 @@ const FormKonfirmasi = ({ data, onClick }) => {
             return await axiosAuth.patch(`/api/v2/order/lapangan/${data?.lapanganId}/information/${data?.detailLapanganId}/play?id=${data?.id}`)
         },
         onSuccess: () => {
+            queryClient.invalidateQueries('fetch.order')
+            queryClient.invalidateQueries('fetch.statistik')
             toast.success("Berhasil dikonfirmasi", { style: { backgroundColor: "#00a96e" } })
         },
         onError: () => {

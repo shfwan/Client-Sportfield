@@ -5,19 +5,15 @@ import { usePostLapangan, useUpdateLapangan } from '@/features/lapangan'
 import { useQueryClient } from '@tanstack/react-query'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import InputImage from '../Image/InputImage'
-import ImagePreview from '@/components/Elements/Image'
 
 const FormLapangan = ({ data, onClick, type = "create" }) => {
-    const router = useRouter()
     const queryClient = useQueryClient()
 
     const { mutate: createLapangan } = usePostLapangan({
 
         onSuccess: (res) => {
             localStorage.setItem("aWQ=", res.data.data.id)
-            queryClient.invalidateQueries({ queryKey: ['fetch.detailLapangan'] })
+            queryClient.invalidateQueries('fetch.detailLapangan')
             document.getElementById("lapanganCreate").close()
             window.location.reload()
         }
@@ -26,9 +22,10 @@ const FormLapangan = ({ data, onClick, type = "create" }) => {
     const { mutate: updateLapangan } = useUpdateLapangan({
 
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['fetch.detailLapangan', data.id] })
             document.getElementById("lapanganUpdate").close()
-            router.push("/management")
+            queryClient.invalidateQueries('fetch.detailLapangan')
+            toast.success("Berhasil Perbarui Lapangan", { style: { backgroundColor: "#00a96e" } })
+
         }
     })
 

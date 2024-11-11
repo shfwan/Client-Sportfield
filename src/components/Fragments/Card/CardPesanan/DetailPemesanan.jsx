@@ -14,8 +14,7 @@ import { useFetchByIdUser } from '@/features/user'
 import { socketInstance } from '@/lib/socket'
 import { useQueryClient } from '@tanstack/react-query'
 
-const DetailPemesanan = ({ orderId, data, token }) => {    
-    
+const DetailPemesanan = ({ orderId, data, token }) => {        
 
     const { data: session } = useSession()
     const queryClient = useQueryClient()
@@ -52,7 +51,7 @@ const DetailPemesanan = ({ orderId, data, token }) => {
     const { mutate: order } = usePembayaran({
         onSuccess: (result) => {
             document.getElementById("modalPesanan" + token.role + data.id).close()
-            window.snap.pay(result?.data.data.token, {
+            window.snap.pay(data.token, {
                 onSuccess: (result) => {
                     orderUpdate(data)
                     socketInstance.emit("send_checkout")
@@ -76,6 +75,22 @@ const DetailPemesanan = ({ orderId, data, token }) => {
             })
         }
     })
+
+    const handleBayar = () => {
+        document.getElementById("modalPesanan" + token.role + data.id).close()
+        // alert(data.snapToken)
+        window.snap.pay(data.snapToken, {
+            onSuccess: (result) => {
+                orderUpdate(data)
+                socketInstance.emit("send_checkout")
+
+                toast.success("Berhasil ditambahkan pemesanan", { style: { backgroundColor: "#00a96e" } })
+            },
+            onError: (result) => {
+                toast.error("Gagal melakukan checkout" + result, { style: { backgroundColor: "#ff5861" } })
+            }
+        })
+    }
 
     const { mutate:cancelOrder } = userPatchOrderCancel({
         onSuccess: () => {
@@ -161,7 +176,7 @@ const DetailPemesanan = ({ orderId, data, token }) => {
                             </Button>
                             <Button
                                 className="btn-success w-full md:btn-wide text-white"
-                                onClick={() => { order(data); document.getElementById("modalPesanan" + token.role + data.id).close() }}>
+                                onClick={handleBayar}>
                                 Bayar
                             </Button>
                         </div>

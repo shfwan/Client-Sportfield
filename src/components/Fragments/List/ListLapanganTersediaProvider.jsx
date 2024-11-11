@@ -70,29 +70,6 @@ const ListLapanganTersediaProvider = ({ id, jam }) => {
                     {
                         lapanganTersediaLoading ? CardLapanganSkeleton() : lapanganTersedia?.data.data.map((item, index) => (
                             <div key={index}>
-                                {/* <CardLapangan className="w-fit h-fit cursor-pointer">
-                                    <CardLapangan.Header className="">
-                                        <figure className='max-w-96'>
-                                            <ImagePreview
-                                                className="rounded-t-xl"
-                                                src={process.env.NEXT_PUBLIC_API + "/api/v1/lapangan/picture/" + item.picture}
-                                                alt="Shoes"
-                                                loading="lazy"
-                                            />
-                                        </figure>
-                                    </CardLapangan.Header>
-                                    <CardLapangan.Body className="card-body">
-                                        <label className="text-ellipsis overflow-hidden text-nowrap text-lg font-bold">{item.name}</label>
-                                        <p>{item.description}</p>
-                                        <label htmlFor="jam">{item.jam[0].open} - {item.jam[item.jam.length - 1].close}</label>
-                                        <label className='font-semibold' htmlFor="status&type">{item.type}/{item.statusLapangan}</label>
-                                        <label className='font-bold' htmlFor="price">{ToRupiah(item.price)} / <strong>Jam</strong></label>
-                                    </CardLapangan.Body>
-                                    <CardLapangan.Footer className="justify-end">
-                                        <Button className="text-white btn-warning" onClick={() => document.getElementById("lapanganTersediaUpdate" + item.id).showModal()}><HiOutlinePencilAlt size={24} /></Button>
-                                        <Button className="text-white btn-error" onClick={() => deleteLapanganTersedia({ id: item.id, lapanganId: item.lapanganId })}><HiOutlineTrash size={24} /></Button>
-                                    </CardLapangan.Footer>
-                                </CardLapangan> */}
                                 <div className="card bg-base-100 w-96 shadow-lg">
                                     <figure className='min-h-72 max-h-72 bg-gray-400'>
                                         <img

@@ -63,7 +63,7 @@ const SideNavbarLayout = ({ children }) => {
                     </Link>
 
                     <ButtonSide className="w-full" onClick={() => setMenu(!isMenu)} href="/dashboard"><Home size={26} />Dashboard</ButtonSide>
-                    <ButtonSide className="w-full" onClick={() => setMenu(!isMenu)} href="/management"><LuClipboardList size={26} />Management</ButtonSide>
+                    <ButtonSide className="w-full" onClick={() => setMenu(!isMenu)} href="/management"><LuClipboardList size={26} />Lapangan</ButtonSide>
                     <ButtonSide className="w-full" onClick={() => setMenu(!isMenu)} href="/pemesanan"><LuShoppingCart size={26} />Pesanan</ButtonSide>
                     <ButtonSide className="w-full" onClick={() => setMenu(!isMenu)} href="/riwayat"><LuHistory size={26} />Riwayat</ButtonSide>
 

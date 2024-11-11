@@ -13,13 +13,6 @@ const DetailPage = () => {
     const state = useSearchParams()
     const { data: detailLapangan, isLoading, error, refetch: refetchLapanganDetail } = useFetchByIdLapangan(state.get("id"))
 
-
-
-
-    // console.log(gallery);
-
-
-
     return (
         <section className="container mx-auto md:max-w-7xl">
             <div className="block space-y-10 bg-white p-5 md:p-10 rounded-xl shadow-md border   ">
