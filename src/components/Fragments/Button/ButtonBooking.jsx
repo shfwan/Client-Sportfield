@@ -5,7 +5,6 @@ import ListBookingLapangan from '../List/ListBookingLapangan'
 const ButtonBooking = () => {
     const handleBtnOrder = () => {
         document.getElementById("orderManual").showModal()
-
     }
 
     return (

@@ -3,9 +3,6 @@ import { useCheckOut } from "@/features/order"
 import { useOrderStore } from "@/store/orderStore"
 import { toast } from "react-toastify"
 import ListJamLapangan from "../List/Jam/ListJamLapangan"
-import ImagePreview from "@/components/Elements/Image"
-import { faker } from "@faker-js/faker"
-import { ToRupiah } from "@/lib/toRupiah"
 import { useSession } from "next-auth/react"
 import { jwtDecode } from "jwt-decode"
 import { useQueryClient } from "@tanstack/react-query"
@@ -30,8 +27,8 @@ const FormPembayaran = ({ item, onClick = () => { } }) => {
                 if (token.role === "customer") {
                     window.location.href = "/pemesanan"
                 } else if (token.role === "provider") {
-                    queryClient.invalidateQueries('fetch.order')
-                    queryClient.invalidateQueries('fetch.statistik')
+                    queryClient.invalidateQueries({queryKey: ['fetch.order']})
+                    queryClient.invalidateQueries({queryKey: ['fetch.statistik']})
                 }
             }
         },

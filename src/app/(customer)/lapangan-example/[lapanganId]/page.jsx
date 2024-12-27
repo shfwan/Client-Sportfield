@@ -5,13 +5,9 @@ import ListLapanganTersedia from "@/components/Fragments/List/ListLapanganTersed
 import ListTanggal from "@/components/Fragments/List/ListTanggal"
 import ImagePreviewCaraousel from "@/components/Layouts/Detail Lapangan/ImagePreviewCaraouselLayout"
 import { useFetchByIdLapangan } from "@/features/detailLapangan"
-import { axiosInstace } from "@/lib/axios"
-import { useQuery } from "@tanstack/react-query"
-import { useSearchParams } from 'next/navigation'
 import { Map } from "react-feather"
 const DetailPage = () => {
-    const state = useSearchParams()
-    const { data: detailLapangan, isLoading, error, refetch: refetchLapanganDetail } = useFetchByIdLapangan(state.get("id"))
+    const { data: detailLapangan, isLoading, error, refetch: refetchLapanganDetail } = useFetchByIdLapangan()
 
     return (
         <section className="container mx-auto md:max-w-7xl">
@@ -40,7 +36,7 @@ const DetailPage = () => {
                             </p>
                         </div>
                     </div>
-                    
+
                     {/* Alamat */}
                     <div className="inline-flex w-full border p-4 rounded-md">
                         <div className="block w-full">
@@ -71,6 +67,7 @@ const DetailPage = () => {
             </div>
         </section>
     )
+
 }
 
 export default DetailPage

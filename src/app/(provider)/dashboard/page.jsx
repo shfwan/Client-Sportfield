@@ -12,6 +12,7 @@ import ButtonBooking from '@/components/Fragments/Button/ButtonBooking'
 import { useFetchByIdLapangan } from '@/features/detailLapangan'
 import EmptyData from '@/components/Fragments/EmptyData'
 import { useFetchNotification } from '@/features/notif'
+import { days } from '@/lib/date'
 
 const Dashboard = () => {
 
@@ -32,6 +33,8 @@ const Dashboard = () => {
 
     const { data: listNotification } = useFetchNotification()
 
+    
+
     const RenderDashboard = () => {
         if (detailLapangan !== undefined) {
             return (
@@ -41,10 +44,8 @@ const Dashboard = () => {
 
                         {/* Notification */}
                         <div className='ml-auto hidden md:inline-flex gap-4 items-center justify-center'>
-                            <span className='p-2 bg-success rounded-md'>
-                                <MdNotifications size={24} color='white' />
-                            </span>
-                            <label className='' htmlFor="">{time}</label>
+                            <label className='' htmlFor="date">{days[date.getDay() - 1]}</label>
+                            <label className='' htmlFor="time">{time}</label>
                         </div>
                     </div>
                     <div className='flex flex-row h-full gap-4'>
@@ -66,7 +67,7 @@ const Dashboard = () => {
                         </div>
 
                         {/* Notifikasi */}
-                        <div className='hidden 2xl:block space-y-4 h-full shadow bg-white rounded-md w-96 p-4 overflow-y-scroll no-scrollbar'>
+                        {/* <div className='hidden 2xl:block space-y-4 h-full shadow bg-white rounded-md w-96 p-4 overflow-y-scroll no-scrollbar'>
                             <h3 className='text-center font-semibold'>Pemberitahuan</h3>
                             <hr />
                             {
@@ -100,7 +101,7 @@ const Dashboard = () => {
                                     </div>
                                 )
                             }
-                        </div>
+                        </div> */}
 
                     </div>
                     <div className='absolute bottom-0 right-0 inline-flex gap-2'>

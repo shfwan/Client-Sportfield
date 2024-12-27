@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Button from '@/components/Elements/Button'
 import { useOrderStore } from '@/store/orderStore'
-import { faker } from '@faker-js/faker'
 import ModalLayout from '@/components/Layouts/ModalLayout'
 import FormPembayaran from '../../Form/FormPembayaran'
 import { signIn, useSession } from 'next-auth/react'
 import Swal from 'sweetalert2'
-import { redirect, useRouter } from 'next/navigation'
 import { GiShuttlecock } from 'react-icons/gi'
 import { ToRupiah } from '@/lib/toRupiah'
 import { TbBuildingCottage } from "react-icons/tb";
@@ -21,21 +19,11 @@ const CardLapanganTersedia = ({ lapanganTersedia }) => {
         state.clearJam,
     ])
 
-    const slides = [
-        faker.image.url(),
-        faker.image.url(),
-        faker.image.url(),
-    ]
-
 
     const [isJam, setIsJam] = useState(false)
-    const handleJamClick = () => {
-        setIsJam(!isJam)
-    }
 
     useEffect(() => { setIsJam(false) }, [date])
 
-    const router = useRouter()
     const handleCheckout = () => {
         if (status === 'authenticated') {
 
@@ -81,7 +69,7 @@ const CardLapanganTersedia = ({ lapanganTersedia }) => {
                     </div>
                 </div>
             </div>
-            <ModalLayout id={"modalPembayaran" + lapanganTersedia.id} className='min-h-full' title="Order" btnX={false}>
+            <ModalLayout id={"modalPembayaran" + lapanganTersedia.id} className='min-h-fit' title="Order" btnX={false}>
                 <FormPembayaran item={lapanganTersedia} onClick={() => { clearJam([]); document.getElementById("modalPembayaran" + lapanganTersedia.id).close() }} />
             </ModalLayout>
         </>

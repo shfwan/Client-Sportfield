@@ -5,7 +5,7 @@ import { usePostLogout } from '@/features/auth'
 import ImagePreview from '@/components/Elements/Image'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { useStorePublic } from '@/store/storePublic'
 import ButtonSide from '@/components/Elements/Button/ButtonSide'
 
@@ -65,7 +65,7 @@ const TopNavbarLayout = () => {
                         <div className='hidden sm:block'>
                             <div className='flex w-fit gap-4 items-center'>
                                 <ButtonSide className="w-fit" href="/">Home</ButtonSide>
-                                <ButtonSide className="w-fit" href="/lapangan?page=1">Lapangan</ButtonSide>
+                                <ButtonSide className="w-fit" href="/lapangan">Lapangan</ButtonSide>
                                 {
                                     status == "authenticated" ? (
                                         <ButtonSide className="w-fit" href="/pemesanan">Pemesanan</ButtonSide>

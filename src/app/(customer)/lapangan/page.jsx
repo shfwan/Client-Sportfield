@@ -1,40 +1,72 @@
-import ImagePreview from '@/components/Elements/Image'
-import Search from '@/components/Fragments/Search'
-import LapanganLayout from '@/components/Layouts/Home/LapanganLayout'
-import { useSession } from 'next-auth/react'
-import React from 'react'
+"use client"
 
-const Lapangan = () => {
+import Button from "@/components/Elements/Button"
+import ListLapanganTersedia from "@/components/Fragments/List/ListLapanganTersedia"
+import ListTanggal from "@/components/Fragments/List/ListTanggal"
+import ImagePreviewCaraousel from "@/components/Layouts/Detail Lapangan/ImagePreviewCaraouselLayout"
+import { useFetchByIdLapangan } from "@/features/detailLapangan"
+import { Map } from "react-feather"
+const LapanganPage = () => {
+    const { data: detailLapangan, isLoading, error, refetch: refetchLapanganDetail } = useFetchByIdLapangan()
+    
+    return (
+        <section className="container mx-auto md:max-w-7xl">
+            <div className="block space-y-10 bg-white p-5 md:p-10 rounded-xl shadow-md border   ">
+                {/* Image preview */}
+                {
+                    isLoading ? (
+                        <div className="skeleton w-full h-[36rem]"></div>
+                    ) : <ImagePreviewCaraousel id={detailLapangan?.data.data.id} />
+                }
+                {/* Detail information */}
 
-  return (
-    <section className="block space-y-8 md:space-y-16">
-      {/* Hero */}
-      <header className="block max-h-96 bg-success w-full">
-        <div className="container mx-auto max-w-96 md:max-w-5xl block ">
-          <div className='flex items-center justify-between'>
-            <figure className='hidden md:flex aspect-auto max-w-80'>
-              <ImagePreview src="/LogoIcon.png" />
-            </figure>
-            <div className='text-white block'>
-              <h1 className='text-2xl'>Selamat Datang di
-                <strong> Sportfields!</strong>
-              </h1>
-              <p className='hidden sm:block text-lg'>
-                Mari Olahraga Bersama Orang Terdekatmu.
-              </p>
+                <div className="flex flex-col w-full gap-4">
+                    {
+                        isLoading ? (
+                            <div className="max-w-96 p-5 rounded-md skeleton  text-[2rem] font-semibold" />
+                        ) : (
+                            <label className="text-[2rem] font-semibold">{detailLapangan?.data.data.name}</label>
+                        )
+                    }
+                    <div className="block">
+                        <h3 className="text-xl font-bold">Deskripsi</h3>
+                        <div className="max-w-96 rounded-md  p-4">
+                            <p>
+                                {detailLapangan?.data.data.description}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Alamat */}
+                    <div className="inline-flex w-full border p-4 rounded-md">
+                        <div className="block w-full">
+                            <h3 className="text-lg font-semibold">Alamat</h3>
+                            <label className="w-full" htmlFor="">{detailLapangan?.data.data.alamat}</label>
+                        </div>
+                        <a href={detailLapangan?.data.data.mapUrl} target="_blank">
+                            <Button className="text-white  btn-info  w-fit ">
+                                <div className="w-full inline-flex items-center gap-4">
+                                    <h4 htmlFor="">Lihat lokasi</h4>
+                                    <Map color="#ffffff" />
+                                </div>
+                            </Button>
+                        </a>
+                    </div>
+
+                </div>
+
+                {/* Lapangan tersedia */}
+                <div className="block space-y-4 w-full">
+                    <h1 className="text-black text-2xl font-semibold">Pilih Lapangan yang tersedia</h1>
+                    <div className="overflow-x-scroll rounded-md w-full p-4 border no-scrollbar md:overflow-hidden ">
+                        <ListTanggal />
+                    </div>
+                </div>
+
+                <ListLapanganTersedia data={isLoading ? null : detailLapangan?.data.data} />
             </div>
-          </div>
-          <div className='translate-y-4 px-2'>
-            <Search />
-          </div>
-        </div>
-      </header>
-      <div className='container mx-auto p-5 md:px-10 max-w-2xl md:max-w-7xl'>
-        <LapanganLayout />
-      </div>
-
-    </section>
-  )
+        </section>
+    )
 }
 
-export default Lapangan
+export default LapanganPage

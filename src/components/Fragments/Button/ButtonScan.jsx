@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ModalLayout from '../../Layouts/ModalLayout'
 import FormKonfirmasi from '../Form/FormKonfirmasi'
 import QrScanner from 'qr-scanner'
@@ -54,9 +54,8 @@ const ButtonScan = () => {
     }
 
     const handleStop = () => {
-        scanQr(!isScan)
-        setIsResult(false)
         document.getElementById("scanQrCode").close()
+        scanQr(!isScan)
         setIsResult(false)
     }
     
